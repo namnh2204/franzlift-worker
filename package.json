@@ -18,17 +18,18 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.19.2",
+    "jose": "^6.2.9",
     "multer": "^1.4.5-lts.1",
-    "sanitize-html": "^2.17.5",
-    "sharp": "^0.33.5",
-    "tinymce": "^8.6.0"
+    "sanitize-html": "^2.17.7",
+    "sharp": "^0.35.3",
+    "tinymce": "^8.8.2"
   },
   "devDependencies": {
     "aos": "^2.3.4",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.47",
-    "swiper": "^11.1.14",
+    "autoprefixer": "^10.5.4",
+    "postcss": "^8.5.26",
+    "swiper": "^14.1.0",
     "tailwindcss": "^3.4.14",
-    "wrangler": "^4.30.0"
+    "wrangler": "^4.124.0"
   }
 }

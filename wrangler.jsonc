@@ -5,7 +5,27 @@
   "compatibility_date": "2026-08-08",
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
-  "preview_urls": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "vars": {
+    "ACCESS_TEAM_DOMAIN": "https://thuanphat.cloudflareaccess.com",
+    "ACCESS_AUD": "914d8d9dfadd9574a3f7e05b5b16d9bea87dff5519492a3fbd26f14c636cd678"
+  },
+  "ratelimits": [
+    {
+      "name": "PUBLIC_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 120, "period": 60 }
+    },
+    {
+      "name": "ADMIN_RATE_LIMITER",
+      "namespace_id": "1002",
+      "simple": { "limit": 10, "period": 60 }
+    }
+  ],
   "rules": [
     {
       "type": "Text",

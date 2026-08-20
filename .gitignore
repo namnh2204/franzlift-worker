@@ -22,6 +22,7 @@ npm-debug.log*
 # Coverage and tool caches
 coverage/
 .cache/
+.pi/
 
 # CMS uploads are runtime data stored in R2 in Cloudflare.
 # Keep metadata/content JSON tracked; do not commit uploaded binaries.
