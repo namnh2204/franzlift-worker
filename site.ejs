@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="vi">
+<%
+  const logo = '/assets-local/01-c350d68021ef0e890ebadb3af752b40a.svg';
+  const heroImgs = [
+    '/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.png',
+    '/assets-local/03-2aeef62d95c474ce21e032cf459b418e.png',
+    '/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618.png',
+    '/assets-local/05-df2488e7f314f5e3ede37268cf238bb0.png'
+  ];
+  const advImgs = [
+    '/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.png',
+    '/assets-local/07-399adc95948b507d47e4fe295d45e492.png',
+    '/assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53.png',
+    '/assets-local/09-54086bca79dd4a4376e87b9e84913998.png'
+  ];
+  const t = (key, fallback) => content[key] || fallback;
+  const hotline = content['contact.hotline'] && content['contact.hotline'] !== '............' ? content['contact.hotline'] : '0939612555';
+  const salesPhone = content['contact.salesPhone'] || hotline;
+  const techPhone = content['contact.techPhone'] || '';
+  const email = content['contact.email'] && content['contact.email'] !== '............' ? content['contact.email'] : 'homeliftvietnam@gmail.com';
+  const address = content['contact.address'] && content['contact.address'] !== '............' ? content['contact.address'] : 'Số 55A Louis I, Louis City, Đại Mỗ, Hà Nội';
+  const zalo = content['contact.zalo'] || ('https://zalo.me/' + hotline);
+  const facebook = content['contact.facebook'] || 'https://www.facebook.com/profile.php?id=61591522652884';
+  const facebookName = content['contact.facebookName'] || 'Franz Home Lift Vietnam';
+  const facebookCover = content['contact.facebookCover'] || heroImgs[0];
+  const facebookAvatar = content['contact.facebookAvatar'] || logo;
+  const facebookShare = facebook ? 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(facebook) : '';
+  const facebookPlugin = facebook ? 'https://www.facebook.com/plugins/page.php?href=' + encodeURIComponent(facebook) + '&tabs=&width=340&height=150&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true' : '';
+  const fmtPhone = (p) => { const d = String(p || '').replace(/\D/g, ''); return d.length === 10 ? d.slice(0,4) + '.' + d.slice(4,7) + '.' + d.slice(7) : p; };
+
+  // Image helper: webp srcset + png/jpg fallback, intrinsic width/height, lazy
+  // by default. Pass {eager:true} for the LCP image. Keeps `> img` CSS intact.
+  const img = (src, alt, opts = {}) => {
+    const m = imageMap && imageMap[src] ? imageMap[src] : {};
+    const a = String(alt || '').replace(/"/g, '&quot;');
+    const cls = opts.class ? ` class="${opts.class}"` : '';
+    const loading = opts.eager ? '' : ' loading="lazy"';
+    const fp = opts.eager ? ' fetchpriority="high"' : '';
+    const sizes = opts.sizes ? ` sizes="${opts.sizes}"` : '';
+    const dim = m.width ? ` width="${m.width}" height="${m.height}"` : '';
+    const srcset = (m.srcset && m.srcset.length) ? ` srcset="${m.srcset.map((s) => s.url + ' ' + s.w + 'w').join(', ')}"` : '';
+    return `<img src="${src}" alt="${a}"${cls}${dim}${srcset}${sizes}${loading}${fp} decoding="async">`;
+  };
+
+  const heroSlideTexts = [
+    t('home.heroSlide1', 'Thang máy nhập khẩu Franz - Tinh hoa công nghệ Đức dành cho không gian sống hiện đại'),
+    t('home.heroSlide2', 'Tiêu chuẩn Đức – Khởi nguồn từ tinh thần thủ công trăm năm.'),
+    t('home.heroSlide3', 'Giải pháp thang máy thông minh dành cho nhà cải tạo, nhà phố và biệt thự cao cấp.'),
+    t('home.heroSlide4', 'Hố Pit siêu nông – Không phòng máy – Tối ưu diện tích – Dấu ấn kiến trúc sang trọng.')
+  ];
+  const heroClass = (s) => s.length > 70 ? 'is-long' : s.length > 45 ? 'is-medium' : 'is-short';
+
+  // Products + posts are data-driven (content.productItems / content.postItems),
+  // managed via /admin. New slug URLs: /san-pham/:slug, /tin-tuc/:slug.
+  const productItems = (content.productItems && content.productItems.length) ? content.productItems : [];
+  const postItems = (content.postItems && content.postItems.length) ? content.postItems : [];
+  const productUrl = (p) => '/san-pham/' + p.slug;
+  const postUrl = (p) => '/tin-tuc/' + p.slug;
+  const pageUrl = { about: '/gioi-thieu', products: '/san-pham', services: '/dich-vu', projects: '/du-an', blog: '/tin-tuc', tech: '/cong-nghe', contact: '/lien-he' };
+  const vrCabins = (content.vrCabins && content.vrCabins.length) ? content.vrCabins : [
+    ['FZ-910S','Trần cabin: khung hợp kim nhôm, nguồn sáng LED','/assets-local/vr-cabins/fz-910s.jpg'],
+    ['FZ-901X','Trần cabin: inox gương, đèn LED âm trần','/assets-local/vr-cabins/fz-901x.jpg'],
+    ['FZ-912','Trần cabin: khung inox xước, tấm acrylic xuyên sáng','/assets-local/vr-cabins/fz-912.jpg'],
+    ['FZ-911','Trần cabin: khung inox gương vàng hồng, tấm acrylic xuyên sáng','/assets-local/vr-cabins/fz-911.jpg'],
+    ['FZ-914','Trần cabin: thép vân gỗ, đèn LED âm trần và dải LED','/assets-local/vr-cabins/fz-914.jpg'],
+    ['FZ-917','Nóc cabin: inox gương, đèn LED âm trần','/assets-local/vr-cabins/fz-917.jpg']
+  ];
+
+  const services = content.services || [];
+  const projects = content.projects || [];
+  const posts = content.posts || [];
+  const homeAdvantages = (content.homeAdvantages && content.homeAdvantages.length) ? content.homeAdvantages : [
+    ['Giải pháp toàn diện','Tùy biến phương án theo diện tích và bố cục từng gia đình.'],
+    ['Phong cách đa dạng','Cabin có nhiều phong cách trang trí, tôn lên gu thẩm mỹ riêng.'],
+    ['Vận hành êm ái','Máy kéo nam châm vĩnh cửu và dây belt thép cho hành trình mượt.'],
+    ['Thiết kế yên tĩnh','Tủ điều khiển siêu yên tĩnh giúp giảm tiếng ồn tối đa.']
+  ];
+  const homeCases = (content.homeCases && content.homeCases.length) ? content.homeCases : heroImgs.concat(advImgs).slice(0,6).map((caseImg, i) => [['Showroom biệt thự','Nhà phố hiện đại','Không gian cải tạo','Biệt thự cao cấp','Căn hộ thông tầng','Không gian gia đình'][i], '', caseImg]);
+  const homeServices = (content.homeServices && content.homeServices.length) ? content.homeServices : [
+    ['Tư vấn giải pháp','Đề xuất phương án lắp đặt phù hợp với không gian và ngân sách.'],
+    ['Đo đạc & thiết kế','Khảo sát hiện trạng, tối ưu hố thang, cabin và hành trình.'],
+    ['Hậu mãi tận tâm','Theo dõi một-một, bảo trì định kỳ và xử lý nhanh chóng.']
+  ];
+  const vrUrl = content['vr.url'] || 'https://vr.justeasy.cn/view/1845656k57jm8951-1657245612.html';
+
+  // ---- SEO: per-page title, description, canonical, breadcrumb ----
+  const siteOrigin = (typeof origin !== 'undefined' && origin) ? origin : 'https://franzlift.vn';
+  const canon = siteOrigin + ((typeof canonical !== 'undefined' && canonical) ? canonical : '/');
+  const product = (page === 'productDetail') ? (productItems[productIndex || 0] || null) : null;
+  const post = (page === 'postDetail') ? (postItems[postIndex || 0] || null) : null;
+
+  const titles = {
+    home: content['home.title'] || 'Thang Máy Nhập Khẩu Franz Chính Hãng',
+    about: (content['about.title'] || 'Về Franz') + ' | Franz Lift',
+    products: (content['products.title'] || 'Sản phẩm') + ' | Franz Lift',
+    services: (content['services.title'] || 'Dịch vụ') + ' | Franz Lift',
+    projects: (content['projects.title'] || 'Dự án') + ' | Franz Lift',
+    blog: (content['blog.title'] || 'Blog') + ' | Franz Lift',
+    tech: 'Công Nghệ | Franz Lift',
+    contact: (content['contact.title'] || 'Liên hệ') + ' | Franz Lift',
+    vr: (content['vr.title'] || 'Trải nghiệm 360° VR') + ' | Franz Lift'
+  };
+  const pageTitle = product ? (product.name + ' | Thang máy Franz')
+    : post ? (post.title + ' | Tin tức Franz')
+    : (titles[page] || titles.home);
+
+  const descs = {
+    home: content['home.metaDescription'] || '',
+    about: content['about.p1'] || '',
+    products: content['products.intro'] || '',
+    services: content['services.intro'] || '',
+    projects: content['projects.intro'] || '',
+    blog: content['blog.intro'] || '',
+    tech: 'Công nghệ thang máy Franz: hố pit siêu nông, không phòng máy, vận hành điện 220V, an toàn chuẩn châu Âu.',
+    contact: content['contact.intro'] || '',
+    vr: 'Trải nghiệm 360° các mẫu cabin thang máy Franz và lựa chọn thiết kế phù hợp với không gian của bạn.'
+  };
+  const metaDesc = product ? product.summary : post ? post.excerpt : (descs[page] || descs.home);
+
+  const crumbLabels = {
+    about: content['about.title'] || 'Giới thiệu', products: content['products.title'] || 'Sản phẩm',
+    services: content['services.title'] || 'Dịch vụ', projects: content['projects.title'] || 'Dự án',
+    blog: content['blog.title'] || 'Blog', tech: 'Công nghệ', contact: content['contact.title'] || 'Liên hệ',
+    vr: 'Trải nghiệm 360°'
+  };
+  const crumbs = [{ name: 'Trang chủ', url: siteOrigin + '/' }];
+  if (page === 'productDetail' && product) {
+    crumbs.push({ name: content['products.title'] || 'Sản phẩm', url: siteOrigin + pageUrl.products });
+    crumbs.push({ name: product.name, url: canon });
+  } else if (page === 'postDetail' && post) {
+    crumbs.push({ name: content['blog.title'] || 'Tin tức', url: siteOrigin + pageUrl.blog });
+    crumbs.push({ name: post.title, url: canon });
+  } else if (crumbLabels[page]) {
+    crumbs.push({ name: crumbLabels[page], url: canon });
+  }
+
+  const orgLd = {
+    '@context': 'https://schema.org', '@type': 'Organization', name: 'Franz Lift Vietnam',
+    url: siteOrigin + '/', logo: siteOrigin + logo,
+    contactPoint: [{ '@type': 'ContactPoint', telephone: '+84' + salesPhone.replace(/\D/g, '').replace(/^0/, ''), contactType: 'sales', areaServed: 'VN' }],
+    sameAs: [zalo]
+  };
+  const localBizLd = {
+    '@context': 'https://schema.org', '@type': 'HomeAndConstructionBusiness', name: 'Franz Lift Vietnam',
+    image: siteOrigin + heroImgs[0], url: siteOrigin + '/', telephone: '+84' + salesPhone.replace(/\D/g, '').replace(/^0/, ''),
+    email: email, address: { '@type': 'PostalAddress', streetAddress: address, addressLocality: 'Hà Nội', addressCountry: 'VN' },
+    areaServed: 'VN'
+  };
+  const breadcrumbLd = {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url }))
+  };
+  const productLd = product ? {
+    '@context': 'https://schema.org', '@type': 'Product', name: product.name, description: product.summary,
+    image: siteOrigin + product.image, brand: { '@type': 'Brand', name: 'Franz' }, category: 'Thang máy gia đình',
+    url: canon
+  } : null;
+  const postLd = post ? {
+    '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, description: post.excerpt,
+    image: siteOrigin + post.image, url: canon, publisher: { '@type': 'Organization', name: 'Franz Lift Vietnam' }
+  } : null;
+%>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><%= pageTitle %></title>
+  <meta name="description" content="<%= metaDesc %>">
+  <link rel="canonical" href="<%= canon %>">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="<%= pageTitle %>">
+  <meta property="og:description" content="<%= metaDesc %>">
+  <meta property="og:url" content="<%= canon %>">
+  <meta property="og:image" content="<%= siteOrigin + heroImgs[0] %>">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/vendor/swiper-bundle.min.css">
+  <link rel="stylesheet" href="/vendor/aos.css">
+  <link rel="stylesheet" href="/app.css">
+  <% if (page === 'home') { %>
+  <script type="application/ld+json"><%- JSON.stringify(orgLd) %></script>
+  <script type="application/ld+json"><%- JSON.stringify(localBizLd) %></script>
+  <% } %>
+  <% if (page === 'contact') { %>
+  <script type="application/ld+json"><%- JSON.stringify(localBizLd) %></script>
+  <% } %>
+  <% if (productLd) { %>
+  <script type="application/ld+json"><%- JSON.stringify(productLd) %></script>
+  <% } %>
+  <% if (postLd) { %>
+  <script type="application/ld+json"><%- JSON.stringify(postLd) %></script>
+  <% } %>
+  <% if (crumbs.length > 1) { %>
+  <script type="application/ld+json"><%- JSON.stringify(breadcrumbLd) %></script>
+  <% } %>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N0CL8QJPFD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-N0CL8QJPFD');
+  </script>
+</head>
+<body>
+<header id="siteHeader" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 <%= page !== 'home' ? 'solid' : '' %>">
+  <div class="wrap flex h-20 items-center gap-8">
+    <a href="/" class="relative block h-10 w-44 shrink-0">
+      <img class="logo-light absolute inset-0 h-full w-full object-contain brightness-0 invert transition-opacity" src="<%= logo %>" alt="FRANZ">
+      <img class="logo-dark absolute inset-0 h-full w-full object-contain transition-opacity" src="/assets-local/logo-header.svg" alt="FRANZ">
+    </a>
+    <nav class="ml-auto hidden items-center gap-7 lg:flex">
+      <a class="nav-link <%= page==='home'?'active':'' %>" href="/">Trang chủ</a>
+      <a class="nav-link <%= page==='about'?'active':'' %>" href="<%= pageUrl.about %>">Giới thiệu</a>
+      <a class="nav-link <%= page==='products'?'active':'' %>" href="<%= pageUrl.products %>">Sản phẩm</a>
+      <a class="nav-link <%= page==='services'?'active':'' %>" href="<%= pageUrl.services %>">Dịch vụ</a>
+      <a class="nav-link <%= page==='projects'?'active':'' %>" href="<%= pageUrl.projects %>">Dự án</a>
+      <a class="nav-link <%= page==='blog'?'active':'' %>" href="<%= pageUrl.blog %>">Tin tức</a>
+      <a class="nav-link <%= page==='tech'?'active':'' %>" href="<%= pageUrl.tech %>">Công nghệ</a>
+      <a class="nav-link <%= page==='contact'?'active':'' %>" href="<%= pageUrl.contact %>">Liên hệ</a>
+    </nav>
+    <a class="header-phone ml-auto hidden font-extrabold lg:block" href="tel:<%= hotline %>"><%= fmtPhone(salesPhone) %></a>
+    <button id="mobileMenuButton" class="ml-auto rounded-xl bg-white/90 px-3 py-2 text-2xl text-franz shadow lg:hidden" type="button" aria-label="Menu">☰</button>
+  </div>
+  <nav id="mobileNav" class="hidden border-t border-line bg-white px-5 py-4 shadow-xl lg:hidden">
+    <div class="flex flex-col gap-3 text-sm font-semibold text-ink">
+      <a href="/">Trang chủ</a><a href="<%= pageUrl.about %>">Giới thiệu</a><a href="<%= pageUrl.products %>">Sản phẩm</a><a href="<%= pageUrl.services %>">Dịch vụ</a><a href="<%= pageUrl.projects %>">Dự án</a><a href="<%= pageUrl.blog %>">Tin tức</a><a href="<%= pageUrl.tech %>">Công nghệ</a><a href="<%= pageUrl.contact %>">Liên hệ</a>
+    </div>
+  </nav>
+</header>
+
+<% if (page === 'home') { %>
+<section class="fl-hero">
+  <div class="hero-swiper swiper fl-hero-swiper">
+    <div class="swiper-wrapper">
+      <% heroImgs.forEach((heroImg, i) => { %>
+      <div class="swiper-slide fl-hero-slide">
+        <%- img(heroImg, 'Thang máy Franz ' + (i+1), { eager: i === 0, sizes: '100vw' }) %>
+        <div class="fl-hero-copy">
+          <p>FRANZ HOME LIFT</p>
+          <% if (i === 0) { %>
+          <h1 class="<%= heroClass(content['home.h1'] || heroSlideTexts[0]) %>"><%= content['home.h1'] || heroSlideTexts[0] %></h1>
+          <% } else { %>
+          <h2 class="fl-hero-h <%= heroClass(heroSlideTexts[i]) %>"><%= heroSlideTexts[i] %></h2>
+          <% } %>
+          <div class="fl-hero-actions">
+            <a href="<%= pageUrl.contact %>">Nhận Báo Giá</a>
+            <a href="tel:<%= hotline %>">Gọi <%= fmtPhone(salesPhone) %></a>
+            <a href="<%= zalo %>" target="_blank" rel="noopener">Chat Zalo</a>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
+<section class="fl-about-strip">
+  <div class="wrap fl-about-grid">
+    <div class="fl-about-text" data-aos="fade-up">
+      <span>Tinh thần thủ công</span>
+      <h2><%= t('home.craftTitle','Đỉnh cao công nghệ Đức - Nền tảng chất lượng vận hành qua 150 năm') %></h2>
+      <p><%= t('home.craftText1','Franz lấy cảm hứng từ kỹ sư Đức Franz Reuleaux – người đặt nền móng cho động lực học cơ cấu hiện đại.') %></p>
+      <p><%= t('home.craftText2','Chúng tôi mang công nghệ tiêu chuẩn Đức vào không gian sống Việt Nam: an toàn, êm ái, tối ưu diện tích và hài hòa với kiến trúc.') %></p>
+    </div>
+    <div class="fl-about-media" data-aos="fade-left">
+      <iframe src="https://www.youtube.com/embed/Y79yUo46ePU" title="Đỉnh cao công nghệ Đức - Franz Home Lift" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<section id="products" class="fl-products">
+  <div class="wrap">
+    <div class="fl-section-title" data-aos="fade-up">
+      <span>Sản phẩm</span>
+      <h2><%= t('home.productTitle','Danh Mục Sản Phẩm') %></h2>
+    </div>
+  </div>
+  <div class="fl-prod-rail" data-aos="fade-up">
+    <% productItems.forEach((p) => { %>
+    <a class="fl-prod-card" href="<%= productUrl(p) %>">
+      <div class="fl-prod-card-img"><%- img(p.image, p.name, { sizes: '(max-width:640px) 80vw, 340px' }) %></div>
+      <div class="fl-prod-card-body">
+        <h3><%= p.name %></h3>
+        <p><%= p.summary %></p>
+        <span>Xem chi tiết →</span>
+      </div>
+    </a>
+    <% }) %>
+  </div>
+  <div class="wrap fl-prod-railfoot">
+    <a class="fl-prod-all" href="<%= pageUrl.products %>">Xem tất cả sản phẩm →</a>
+  </div>
+</section>
+
+<section class="fl-vr">
+  <div class="wrap fl-vr-grid">
+    <div data-aos="fade-right">
+      <span><%= content['vr.eyebrow'] || 'Trải nghiệm 360°' %></span>
+      <h2><%= t('home.vrTitle','Trải nghiệm Franz từ mọi góc nhìn') %></h2>
+      <p><%= t('home.vrText','Khám phá từng mẫu cabin Franz qua công nghệ 360° VR, lựa chọn thiết kế phù hợp nhất cho không gian của bạn.') %></p>
+      <a href="<%= vrUrl %>" target="_blank" rel="noopener"><%= content['vr.button'] || 'Mở trải nghiệm 360°' %></a>
+    </div>
+    <%- img('/assets-local/vr-select-elevator.jpg', 'Trải nghiệm 360° thang máy Franz', { sizes: '(max-width:1023px) 100vw, 50vw' }) %>
+  </div>
+</section>
+
+<section class="fl-advantage">
+  <div class="wrap">
+    <div class="fl-section-title fl-section-title-light" data-aos="fade-up">
+      <span><%= t('home.advantageEyebrow','Ưu điểm') %></span>
+      <h2><%= t('home.advantageTitle','Giải pháp trọn gói cho thang máy gia đình') %></h2>
+    </div>
+    <div class="fl-advantage-grid">
+      <% homeAdvantages.forEach((adv, i) => { const advImg = adv[2] || advImgs[i % advImgs.length]; %>
+      <article class="fl-adv-card" data-aos="fade-up" data-aos-delay="<%= i*80 %>">
+        <%- img(advImg, adv[0], { sizes: '(max-width:1023px) 50vw, 25vw' }) %>
+        <div>
+          <h3><%= adv[0] %></h3>
+          <p><%= adv[1] %></p>
+          <a href="<%= pageUrl.tech %>">Xem thêm</a>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="fl-cases">
+  <div class="wrap">
+    <div class="fl-section-title" data-aos="fade-up">
+      <span><%= t('home.caseEyebrow','Công trình tiêu biểu') %></span>
+      <h2><%= t('home.caseTitle','Tỉ mỉ trong từng công trình, tích lũy từ vô số kiệt tác') %></h2>
+    </div>
+    <div class="case-swiper swiper fl-case-swiper" data-aos="fade-up">
+      <div class="swiper-wrapper">
+        <% homeCases.forEach((homeCase, i) => { const fallbackImg = heroImgs.concat(advImgs)[i % heroImgs.concat(advImgs).length]; const caseImgs = [homeCase[2] || fallbackImg].concat(Array.isArray(homeCase[3]) ? homeCase[3].filter(Boolean) : []); %>
+        <article class="swiper-slide fl-case-card">
+          <div class="fl-case-images" data-case-rotator>
+            <% caseImgs.forEach((caseImg, imgIdx) => { %>
+            <%- img(caseImg, homeCase[0], { class: imgIdx === 0 ? 'is-active' : '', sizes: '(max-width:640px) 84vw, 33vw' }) %>
+            <% }) %>
+          </div>
+          <div><h3><%= homeCase[0] %></h3><% if (homeCase[1]) { %><p><%= homeCase[1] %></p><% } %><a href="<%= pageUrl.projects %>">Xem thêm</a></div>
+        </article>
+        <% }) %>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+<section class="fl-service">
+  <div class="wrap">
+    <div class="fl-section-title" data-aos="fade-up"><span><%= t('home.serviceEyebrow','Dịch vụ') %></span><h2><%= t('home.serviceTitle','Dịch vụ đồng hành trọn vòng đời') %></h2></div>
+    <div class="fl-service-grid">
+      <% homeServices.forEach((item,i)=>{ %>
+      <article data-aos="fade-up" data-aos-delay="<%= i*80 %>"><b>0<%= i+1 %></b><h3><%= item[0] %></h3><p><%= item[1] %></p></article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="fl-news">
+  <div class="wrap">
+    <div class="fl-news-head" data-aos="fade-up"><div><span>Tin tức</span><h2><%= t('home.newsTitle','Trung tâm tin tức') %></h2></div><p><%= t('home.newsIntro','Đưa công nghệ và chất lượng Đức đến gần hơn với từng gia đình Việt.') %></p></div>
+    <div class="fl-news-grid">
+      <% postItems.slice(0,3).forEach((n,i)=>{ %>
+      <a class="fl-news-card" href="<%= postUrl(n) %>" data-aos="fade-up" data-aos-delay="<%= i*80 %>"><%- img(n.image || heroImgs[i], n.title, { sizes: '(max-width:640px) 84vw, 33vw' }) %><div><time><%= n.date || '' %></time><h3><%= n.title %></h3><p><%= n.excerpt %></p></div></a>
+      <% }) %>
+    </div>
+    <div class="fl-prod-railfoot"><a class="fl-prod-all" href="<%= pageUrl.blog %>">Xem tất cả bài viết →</a></div>
+  </div>
+</section>
+
+<section class="fl-message" id="msg">
+  <div class="wrap fl-message-grid">
+    <div data-aos="fade-right"><span>Tư vấn</span><h2><%= t('home.messageTitle','Để lại thông tin tư vấn') %></h2><p><%= t('home.messageIntro','Đội ngũ Franz Việt Nam sẽ liên hệ để tư vấn giải pháp phù hợp nhất cho công trình của bạn.') %></p></div>
+    <form data-aos="fade-left" action="<%= pageUrl.contact %>" method="get">
+      <input type="text" placeholder="Họ và tên">
+      <input type="tel" placeholder="Số điện thoại">
+      <input type="text" placeholder="Khu vực / công trình">
+      <textarea placeholder="Nhu cầu tư vấn"></textarea>
+      <button type="submit">Gửi thông tin</button>
+    </form>
+  </div>
+</section>
+
+<% } else if (page === 'products') { %>
+<section class="relative min-h-[420px] overflow-hidden bg-ink pt-20">
+  <%- img(heroImgs[0], content['products.title'] || 'Sản phẩm', { class: 'absolute inset-0 h-full w-full object-cover', eager: true, sizes: '100vw' }) %>
+  <div class="absolute inset-0 bg-black/55"></div>
+  <div class="wrap relative z-10 flex min-h-[420px] items-center">
+    <div data-aos="fade-up" class="text-white">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">Franz Home Lift</p>
+      <h1 class="font-display text-4xl font-extrabold lg:text-5xl"><%= content['products.title'] || 'Danh Mục Sản Phẩm' %></h1>
+      <p class="mt-4 max-w-2xl text-white/80"><%= content['products.intro'] || '' %></p>
+    </div>
+  </div>
+</section>
+<main class="wrap py-16 lg:py-24">
+  <div class="fl-cat-grid">
+    <% productItems.forEach((p) => { %>
+    <a class="fl-cat-card" href="<%= productUrl(p) %>">
+      <div class="fl-cat-card-img"><%- img(p.image, p.name, { sizes: '(max-width:1023px) 50vw, 33vw' }) %></div>
+      <div class="fl-cat-card-body"><h2><%= p.name %></h2><p><%= p.summary %></p><span>Xem chi tiết →</span></div>
+    </a>
+    <% }) %>
+  </div>
+</main>
+
+<% } else if (page === 'services') { %>
+<section class="relative min-h-[420px] overflow-hidden bg-ink pt-20">
+  <%- img(heroImgs[2], content['services.title'] || 'Dịch vụ', { class: 'absolute inset-0 h-full w-full object-cover', eager: true, sizes: '100vw' }) %>
+  <div class="absolute inset-0 bg-black/55"></div>
+  <div class="wrap relative z-10 flex min-h-[420px] items-center">
+    <div data-aos="fade-up" class="text-white">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">Franz Home Lift</p>
+      <h1 class="font-display text-4xl font-extrabold lg:text-5xl"><%= content['services.title'] || 'Dịch Vụ Của Franz' %></h1>
+      <p class="mt-4 max-w-2xl text-white/80"><%= content['services.intro'] || '' %></p>
+    </div>
+  </div>
+</section>
+<main class="wrap py-16 lg:py-24">
+  <div class="fl-feature-grid">
+    <% services.forEach((s,i)=>{ %>
+    <article class="fl-feature-card" data-aos="fade-up" data-aos-delay="<%= (i%3)*80 %>"><span><%= String(i+1).padStart(2,'0') %></span><h2><%= s[0] %></h2><p><%= s[1] %></p></article>
+    <% }) %>
+  </div>
+  <div class="mt-12 flex flex-wrap gap-4"><a class="btn btn-primary" href="tel:<%= hotline %>">Gọi <%= fmtPhone(salesPhone) %></a><a class="btn btn-outline" href="<%= zalo %>" target="_blank" rel="noopener">Chat Zalo</a></div>
+</main>
+
+<% } else if (page === 'projects') { %>
+<section class="relative min-h-[420px] overflow-hidden bg-ink pt-20">
+  <%- img(heroImgs[3], content['projects.title'] || 'Dự án', { class: 'absolute inset-0 h-full w-full object-cover', eager: true, sizes: '100vw' }) %>
+  <div class="absolute inset-0 bg-black/55"></div>
+  <div class="wrap relative z-10 flex min-h-[420px] items-center">
+    <div data-aos="fade-up" class="text-white">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">Franz Home Lift</p>
+      <h1 class="font-display text-4xl font-extrabold lg:text-5xl"><%= content['projects.title'] || 'Dự Án Tiêu Biểu' %></h1>
+      <p class="mt-4 max-w-2xl text-white/80"><%= content['projects.intro'] || '' %></p>
+    </div>
+  </div>
+</section>
+<main class="wrap py-16 lg:py-24">
+  <div class="fl-cat-grid">
+    <% projects.forEach((p,i)=>{ const projectImgs = [p[2] || heroImgs[i%4]].concat(Array.isArray(p[3]) ? p[3].filter(Boolean) : []); %>
+    <article class="fl-cat-card" data-aos="fade-up" data-aos-delay="<%= (i%3)*80 %>">
+      <div class="fl-cat-card-img" data-case-rotator>
+        <% projectImgs.forEach((projectImg, imgIdx) => { %>
+        <%- img(projectImg, p[0], { class: imgIdx === 0 ? 'is-active' : '', sizes: '(max-width:1023px) 50vw, 33vw' }) %>
+        <% }) %>
+      </div>
+      <div class="fl-cat-card-body"><h2><%= p[0] %></h2><p><%= p[1] %></p></div>
+    </article>
+    <% }) %>
+  </div>
+</main>
+
+<% } else if (page === 'blog') { %>
+<section class="relative min-h-[420px] overflow-hidden bg-ink pt-20">
+  <%- img(heroImgs[1], content['blog.title'] || 'Blog', { class: 'absolute inset-0 h-full w-full object-cover', eager: true, sizes: '100vw' }) %>
+  <div class="absolute inset-0 bg-black/55"></div>
+  <div class="wrap relative z-10 flex min-h-[420px] items-center">
+    <div data-aos="fade-up" class="text-white">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">Franz Home Lift</p>
+      <h1 class="font-display text-4xl font-extrabold lg:text-5xl"><%= content['blog.title'] || 'Blog & Tin Tức' %></h1>
+      <p class="mt-4 max-w-2xl text-white/80"><%= content['blog.intro'] || '' %></p>
+    </div>
+  </div>
+</section>
+<main class="wrap py-16 lg:py-24">
+  <div class="fl-news-grid">
+    <% postItems.forEach((n,i)=>{ %>
+    <a class="fl-news-link" href="<%= postUrl(n) %>" data-aos="fade-up" data-aos-delay="<%= (i%3)*80 %>"><%- img(n.image || heroImgs[i%4], n.title, { sizes: '(max-width:640px) 84vw, 33vw' }) %><div><time><%= n.date || '' %></time><h2 class="fl-news-h"><%= n.title %></h2><p><%= n.excerpt %></p></div></a>
+    <% }) %>
+  </div>
+</main>
+
+<% } else if (page === 'productDetail') { const p = product; const gallery = (p.gallery && p.gallery.length) ? p.gallery : [p.image]; %>
+<section class="fl-detail-hero">
+  <%- img(p.image, p.name, { eager: true, sizes: '100vw' }) %>
+  <div><p>Sản phẩm</p><h1><%= p.name %></h1></div>
+</section>
+<main class="fl-detail-page wrap">
+  <nav class="fl-detail-tabs"><% productItems.forEach((item, idx)=>{ %><a class="<%= idx===(productIndex||0)?'active':'' %>" href="<%= productUrl(item) %>"><%= item.name %></a><% }) %></nav>
+  <section class="fl-detail-grid">
+    <div><%- img(p.image, p.name, { sizes: '(max-width:1023px) 100vw, 55vw' }) %></div>
+    <article><span>FRANZ HOME LIFT</span><h2><%= p.name %></h2><p><%= p.summary %></p><a href="tel:0939612555">Gọi 0939.612.555</a></article>
+  </section>
+  <% if (p.body) { %><section class="fl-detail-body"><div class="fl-rich-text"><%- rich(p.body) %></div></section><% } %>
+  <section class="fl-detail-content fl-gallery-swiper swiper">
+    <div class="swiper-wrapper">
+      <% gallery.forEach((di)=>{ %>
+      <div class="swiper-slide"><%- img(di, p.name, { sizes: '(max-width:1023px) 86vw, 33vw' }) %></div>
+      <% }) %>
+    </div>
+    <div class="swiper-button-prev"></div><div class="swiper-button-next"></div><div class="swiper-pagination"></div>
+  </section>
+</main>
+
+<% } else if (page === 'postDetail') { const a = post; %>
+<section class="relative min-h-[420px] overflow-hidden bg-ink pt-20">
+  <%- img(a.image || heroImgs[0], a.title, { class: 'absolute inset-0 h-full w-full object-cover', eager: true, sizes: '100vw' }) %>
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="wrap relative z-10 flex min-h-[420px] items-center">
+    <div data-aos="fade-up" class="text-white">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">Tin tức<% if (a.date) { %> · <%= a.date %><% } %></p>
+      <h1 class="font-display text-3xl font-extrabold lg:text-5xl max-w-3xl"><%= a.title %></h1>
+    </div>
+  </div>
+</section>
+<main class="fl-detail-page wrap">
+  <article class="fl-article">
+    <% if (a.excerpt) { %><p class="fl-article-lead"><%= a.excerpt %></p><% } %>
+    <div class="fl-rich-text"><%- rich(a.body || '') %></div>
+    <div class="mt-10 flex flex-wrap gap-4"><a class="btn btn-primary" href="tel:<%= salesPhone %>">Gọi <%= fmtPhone(salesPhone) %></a><a class="btn btn-outline" href="<%= pageUrl.blog %>">← Tin tức khác</a></div>
+  </article>
+</main>
+
+<% } else if (page === 'notfound') { %>
+<section class="relative min-h-[60vh] overflow-hidden bg-ink pt-20 flex items-center">
+  <div class="wrap relative z-10 text-center text-white">
+    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">404</p>
+    <h1 class="font-display text-4xl font-extrabold lg:text-5xl">Không tìm thấy trang</h1>
+    <p class="mt-4 text-white/80">Nội dung bạn tìm không tồn tại hoặc đã được di chuyển.</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-4"><a class="btn btn-primary" href="/">Về trang chủ</a><a class="btn btn-ghost" href="<%= pageUrl.products %>">Xem sản phẩm</a></div>
+  </div>
+</section>
+
+<% } else if (page === 'vr') { %>
+<section class="fl-detail-hero fl-vr-hero">
+  <%- img('/assets-local/vr-cabins/vr-hero.jpg', content['vr.title'] || 'Trải nghiệm 360° VR', { eager: true, sizes: '100vw' }) %>
+  <div><p><%= content['vr.eyebrow'] || 'Trải nghiệm 360°' %></p><h1><%= content['vr.title'] || 'Trải nghiệm 360° VR' %></h1><a href="<%= vrUrl %>" target="_blank" rel="noopener"><%= content['vr.button'] || 'Mở trải nghiệm 360°' %></a></div>
+</section>
+<main class="fl-detail-page wrap">
+  <div class="fl-section-title"><span><%= content['vr.cabinEyebrow'] || 'Mẫu cabin' %></span><h2><%= content['vr.cabinTitle'] || 'Chọn mẫu cabin thang máy' %></h2></div>
+  <section class="fl-vr-cabin-grid"><% vrCabins.forEach(c=>{ %><article><%- img(c[2], c[0], { sizes: '(max-width:1023px) 50vw, 33vw' }) %><div><h3><%= c[0] %></h3><p><%= c[1] %></p><a href="<%= vrUrl %>" target="_blank" rel="noopener">Xem 360°</a></div></article><% }) %></section>
+</main>
+
+<% } else { %>
+<section class="relative min-h-[460px] overflow-hidden bg-ink pt-20">
+  <%- img(page==='about'?heroImgs[1]:page==='tech'?heroImgs[2]:heroImgs[3], pageTitle, { class: 'absolute inset-0 h-full w-full object-cover', eager: true, sizes: '100vw' }) %>
+  <div class="absolute inset-0 bg-black/55"></div>
+  <div class="wrap relative z-10 flex min-h-[460px] items-center">
+    <div data-aos="fade-up" class="text-white">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">Franz Home Lift</p>
+      <h1 class="font-display text-5xl font-extrabold"><%= page === 'about' ? content['about.title'] : page === 'tech' ? 'Công Nghệ' : content['contact.title'] %></h1>
+    </div>
+  </div>
+</section>
+<main class="wrap py-16 lg:py-24">
+  <% if (page === 'about') { %>
+  <div class="mx-auto max-w-4xl space-y-10">
+    <section data-aos="fade-up"><h2 class="section-title"><%= content['about.title'] %></h2><p class="mt-6 text-muted"><%= content['about.p1'] %></p><p class="mt-4 text-muted"><%= content['about.p2'] %></p></section>
+    <section data-aos="fade-up"><h2 class="text-2xl font-bold">Câu Chuyện Thương Hiệu</h2><p class="mt-4 text-muted"><%= content['about.story1'] %></p><p class="mt-4 text-muted"><%= content['about.story2'] %></p></section>
+    <div class="grid gap-6 md:grid-cols-2"><section class="rounded-2xl bg-franz-soft p-7" data-aos="fade-up"><h2 class="text-xl font-bold">Tầm Nhìn</h2><p class="mt-3 text-muted"><%= content['about.vision'] %></p></section><section class="rounded-2xl bg-franz-soft p-7" data-aos="fade-up" data-aos-delay="80"><h2 class="text-xl font-bold">Sứ Mệnh</h2><p class="mt-3 text-muted"><%= content['about.mission'] %></p></section></div>
+    <section data-aos="fade-up"><h2 class="mb-8 text-2xl font-bold">Hành Trình Franz</h2><div class="space-y-5"><% content.timeline.forEach(tl => { %><div class="grid gap-4 rounded-2xl border border-line p-6 md:grid-cols-[120px_1fr]"><b class="font-display text-3xl text-franz"><%= tl[0] %></b><p class="text-muted"><%= tl[1] %></p></div><% }) %></div></section>
+  </div>
+  <% } %>
+  <% if (page === 'tech') { %>
+  <div class="text-center" data-aos="fade-up"><p class="kicker">Công nghệ</p><h2 class="section-title">Công Nghệ Franz</h2></div>
+  <div class="mt-12 grid gap-6 md:grid-cols-2"><% content.techItems.forEach((ti,i)=>{ %><article class="rounded-[1.5rem] border border-line bg-white p-8 shadow-sm" data-aos="fade-up" data-aos-delay="<%= i*80 %>"><span class="font-display text-4xl font-extrabold text-franz-light">0<%= i+1 %></span><h2 class="mt-4 text-xl font-bold"><%= ti[0] %></h2><p class="mt-3 text-muted"><%= ti[1] %></p></article><% }) %></div>
+  <% } %>
+  <% if (page === 'contact') { %>
+  <div class="mx-auto max-w-3xl text-center" data-aos="fade-up"><p class="kicker">Liên hệ</p><h2 class="section-title"><%= content['contact.title'] %></h2><p class="mt-5 text-muted"><%= content['contact.intro'] %></p></div>
+  <div class="mx-auto mt-10 max-w-3xl rounded-[2rem] bg-franz-soft p-8 shadow-sm" data-aos="fade-up">
+    <p><b>Showroom Hà Nội:</b> <%= address %></p>
+    <p class="mt-3"><b>Kinh doanh:</b> <a class="text-franz font-semibold" href="tel:<%= salesPhone %>"><%= fmtPhone(salesPhone) %></a></p>
+    <% if (techPhone) { %><p class="mt-3"><b>Kỹ thuật:</b> <a class="text-franz font-semibold" href="tel:<%= techPhone %>"><%= fmtPhone(techPhone) %></a></p><% } %>
+    <p class="mt-3"><b>Email:</b> <a class="text-franz font-semibold" href="mailto:<%= email %>"><%= email %></a></p>
+    <p class="mt-3"><b>Zalo:</b> <a class="text-franz font-semibold" href="<%= zalo %>" target="_blank" rel="noopener">Chat qua Zalo</a></p>
+    <div class="mt-8 flex flex-wrap gap-4"><a class="btn btn-primary" href="tel:<%= salesPhone %>">Gọi Ngay</a><a class="btn btn-outline" href="mailto:<%= email %>">Nhận Báo Giá</a></div>
+  </div>
+  <% } %>
+</main>
+<% } %>
+
+<footer class="fl-footer">
+  <div class="wrap fl-footer-grid">
+    <div class="fl-footer-brand">
+      <img class="h-10 w-44 brightness-0 invert" src="<%= logo %>" alt="FRANZ">
+      <p>Thang máy nhập khẩu Franz chính hãng – tiêu chuẩn Đức, nâng tầm không gian sống.</p>
+    </div>
+    <div class="fl-footer-col">
+      <h3>Liên hệ &amp; Showroom</h3>
+      <p><b>Showroom Hà Nội:</b><br><%= address %></p>
+      <p><b>Kinh doanh:</b> <a href="tel:<%= salesPhone %>"><%= fmtPhone(salesPhone) %></a></p>
+      <% if (techPhone) { %><p><b>Kỹ thuật:</b> <a href="tel:<%= techPhone %>"><%= fmtPhone(techPhone) %></a></p><% } %>
+      <p><b>Email:</b> <a href="mailto:<%= email %>"><%= email %></a></p>
+      <div class="fl-footer-socials">
+        <a class="fl-footer-zalo" href="<%= zalo %>" target="_blank" rel="noopener">Chat Zalo OA</a>
+      </div>
+      <% if (facebookPlugin) { %>
+      <div class="fl-footer-facebook-card">
+        <div class="fl-fb-label">Facebook Fanpage</div>
+        <iframe title="Fanpage Facebook Franz" src="<%= facebookPlugin %>" width="340" height="150" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
+      </div>
+      <% } %>
+    </div>
+    <div class="fl-footer-col">
+      <h3>Liên kết</h3>
+      <nav class="fl-footer-nav"><a href="/">Trang chủ</a><a href="<%= pageUrl.about %>">Giới thiệu</a><a href="<%= pageUrl.products %>">Sản phẩm</a><a href="<%= pageUrl.services %>">Dịch vụ</a><a href="<%= pageUrl.projects %>">Dự án</a><a href="<%= pageUrl.blog %>">Tin tức</a><a href="<%= pageUrl.tech %>">Công nghệ</a><a href="<%= pageUrl.contact %>">Liên hệ</a></nav>
+    </div>
+  </div>
+  <div class="wrap fl-footer-base"><p>© <%= new Date().getFullYear() %> Franz Home Lift Vietnam. Tiêu chuẩn Đức – Nâng tầm không gian sống.</p></div>
+</footer>
+<div class="mobile-cta-bar">
+  <a href="tel:<%= hotline %>" title="Gọi tư vấn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></a>
+  <a href="<%= zalo %>" target="_blank" rel="noopener" title="Chat Zalo" aria-label="Chat Zalo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#0068FF"/><text x="24" y="31" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Zalo</text></svg></a>
+</div>
+<script src="/vendor/swiper-bundle.min.js"></script>
+<script src="/vendor/aos.js"></script>
+<script src="/site.js"></script>
+</body>
+</html>

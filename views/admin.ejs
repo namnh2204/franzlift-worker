@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quản trị nội dung — Franz Lift</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    :root{--franz:#419AC2;--franz-dark:#2f7ea3;--ink:#14212b;--muted:#687783;--line:#e4edf2;--bg:#0f1820;--panel:#17212b;--panel2:#1d2935;--ok:#2ea36b;--err:#d9534f}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Arial,"Helvetica Neue",sans-serif;background:var(--bg);color:#e7eef4;line-height:1.5}
+    a{color:var(--franz)}
+    .topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:16px;padding:14px 22px;background:rgba(15,24,32,.95);backdrop-filter:blur(8px);border-bottom:1px solid #243240}
+    .topbar h1{font-size:16px;margin:0;font-weight:800;letter-spacing:.01em}
+    .topbar .sub{color:#8aa0b0;font-size:12px}
+    .topbar .spacer{margin-left:auto}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #2f4150;background:#22303d;color:#e7eef4;padding:9px 16px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;transition:.18s}
+    .btn:hover{border-color:var(--franz)}
+    .btn.primary{background:var(--franz);border-color:var(--franz);color:#fff}
+    .btn.primary:hover{background:var(--franz-dark)}
+    .btn.danger{background:transparent;border-color:#5a3236;color:#ff9ea2}
+    .btn.danger:hover{background:#3a2326}
+    .btn.ghost{background:transparent}
+    .btn.sm{padding:6px 11px;font-size:12px;border-radius:8px}
+    .wrap{display:flex;min-height:calc(100vh - 57px)}
+    .side{width:210px;flex-shrink:0;border-right:1px solid #243240;padding:18px 12px;position:sticky;top:57px;height:calc(100vh - 57px);overflow:auto}
+    .side button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;color:#b6c6d2;padding:11px 13px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
+    .side button:hover{background:#1b2733;color:#fff}
+    .side button.active{background:var(--franz);color:#fff}
+    .side .grp{margin:14px 8px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#62788a}
+    .main{flex:1;padding:26px 30px 80px;max-width:1080px}
+    .head{display:flex;align-items:flex-end;gap:14px;margin-bottom:20px}
+    .head h2{margin:0;font-size:24px;font-weight:800}
+    .head p{margin:4px 0 0;color:#8aa0b0;font-size:13px}
+    .card{background:var(--panel);border:1px solid #26333f;border-radius:14px;padding:20px;margin-bottom:16px}
+    .row{display:flex;gap:16px;align-items:flex-start}
+    .row.between{justify-content:space-between}
+    label{display:block;font-size:12px;font-weight:700;color:#a9bccb;margin:0 0 6px}
+    input[type=text],input[type=tel],input[type=email],input[type=url],textarea,select{width:100%;padding:10px 12px;border:1px solid #33434f;background:#0e1620;color:#fff;border-radius:9px;font-size:14px;font-family:inherit}
+    textarea{resize:vertical;min-height:74px;line-height:1.6}
+    .field{margin-bottom:14px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+    .muted{color:#7d92a2;font-size:12px}
+    .item{background:var(--panel);border:1px solid #26333f;border-radius:14px;margin-bottom:14px;overflow:hidden}
+    .item-head{display:flex;align-items:center;gap:14px;padding:13px 16px;cursor:pointer;user-select:none}
+    .item-head:hover{background:#1b2733}
+    .item-head img{width:54px;height:40px;object-fit:cover;border-radius:7px;background:#0e1620;flex-shrink:0}
+    .item-head .t{flex:1;min-width:0}
+    .item-head .t b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .item-head .t span{font-size:12px;color:#7d92a2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+    .item-head .ord{display:flex;flex-direction:column;gap:2px}
+    .item-body{padding:4px 16px 18px;border-top:1px solid #243240;display:none}
+    .item.open .item-body{display:block}
+    .chev{transition:.2s;color:#6f8597}
+    .item.open .chev{transform:rotate(90deg)}
+    .imgpick{display:flex;gap:14px;align-items:center}
+    .imgpick .pv{width:120px;height:84px;border-radius:10px;object-fit:cover;background:#0e1620;border:1px solid #33434f;flex-shrink:0}
+    .imgpick .pv.empty{display:flex;align-items:center;justify-content:center;color:#54697a;font-size:11px;text-align:center}
+    .gal{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .gal .g{position:relative;width:96px;height:70px;border-radius:9px;overflow:hidden;border:1px solid #33434f;background:#0e1620}
+    .gal .g img{width:100%;height:100%;object-fit:cover}
+    .gal .g button{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;cursor:pointer;font-size:12px;line-height:1}
+    .toast{position:fixed;right:20px;bottom:20px;z-index:50;background:#16222e;border:1px solid #2f4150;border-left:4px solid var(--ok);padding:13px 18px;border-radius:10px;box-shadow:0 18px 40px rgba(0,0,0,.4);font-size:14px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;max-width:340px}
+    .toast.show{opacity:1;transform:none}
+    .toast.err{border-left-color:var(--err)}
+    .empty{padding:40px;text-align:center;color:#6f8597;border:1px dashed #33434f;border-radius:14px}
+    .pill{display:inline-block;background:#22303d;border:1px solid #33434f;color:#9fb3c2;font-size:11px;padding:2px 9px;border-radius:99px;margin-left:8px}
+    .saving{position:fixed;inset:0;background:rgba(8,13,18,.55);z-index:60;display:none;align-items:center;justify-content:center}
+    .saving.show{display:flex}
+    .spinner{width:42px;height:42px;border:4px solid #2f4150;border-top-color:var(--franz);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:820px){.wrap{flex-direction:column}.side{width:auto;height:auto;position:static;display:flex;flex-wrap:wrap;border-right:0;border-bottom:1px solid #243240}.side button{width:auto}.side .grp{display:none}.grid2,.grid3{grid-template-columns:1fr}.main{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Franz Lift <span class="sub">· Quản trị nội dung</span></h1>
+    <div class="spacer"></div>
+    <a class="btn ghost sm" href="/" target="_blank">Xem website ↗</a>
+    <button class="btn sm" onclick="App.reload()">Tải lại</button>
+    <button class="btn primary" onclick="App.save()">Lưu thay đổi</button>
+  </div>
+  <div class="wrap">
+    <nav class="side" id="tabs"></nav>
+    <main class="main" id="view"></main>
+  </div>
+  <div class="saving" id="saving"><div class="spinner"></div></div>
+  <div class="toast" id="toast"></div>
+  <script>window.__CONTENT__ = <%- serializedContent %>;</script>
+  <script src="/vendor/tinymce/tinymce.min.js"></script>
+  <script src="/admin.js?v=20260730-cta-motion"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Never commit deployment credentials.
+.env
+.env.*
+!.env.example
+
+# Local Wrangler state and logs.
+.wrangler/
+*.log

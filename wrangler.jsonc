@@ -1,0 +1,38 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "franzlift",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-08",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": true,
+  "rules": [
+    {
+      "type": "Text",
+      "globs": ["**/*.ejs"],
+      "fallthrough": true
+    }
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "franzlift",
+      "database_id": "ad1db6be-f0ce-41fd-8936-e4b1c89436f6",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "UPLOADS",
+      "bucket_name": "franzlift-uploads"
+    }
+  ],
+  "images": {
+    "binding": "IMAGES"
+  }
+}

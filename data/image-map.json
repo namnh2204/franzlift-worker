@@ -1,0 +1,467 @@
+{
+  "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.png": {
+    "width": 1920,
+    "height": 960,
+    "webp": "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.webp"
+      }
+    ]
+  },
+  "/assets-local/03-2aeef62d95c474ce21e032cf459b418e.png": {
+    "width": 1920,
+    "height": 960,
+    "webp": "/assets-local/03-2aeef62d95c474ce21e032cf459b418e.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/03-2aeef62d95c474ce21e032cf459b418e-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/03-2aeef62d95c474ce21e032cf459b418e-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/03-2aeef62d95c474ce21e032cf459b418e-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/03-2aeef62d95c474ce21e032cf459b418e.webp"
+      }
+    ]
+  },
+  "/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618.png": {
+    "width": 1920,
+    "height": 960,
+    "webp": "/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618.webp"
+      }
+    ]
+  },
+  "/assets-local/05-df2488e7f314f5e3ede37268cf238bb0.png": {
+    "width": 1920,
+    "height": 960,
+    "webp": "/assets-local/05-df2488e7f314f5e3ede37268cf238bb0.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/05-df2488e7f314f5e3ede37268cf238bb0-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/05-df2488e7f314f5e3ede37268cf238bb0-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/05-df2488e7f314f5e3ede37268cf238bb0-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/05-df2488e7f314f5e3ede37268cf238bb0.webp"
+      }
+    ]
+  },
+  "/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.png": {
+    "width": 852,
+    "height": 528,
+    "webp": "/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84-768.webp"
+      },
+      {
+        "w": 852,
+        "url": "/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.webp"
+      }
+    ]
+  },
+  "/assets-local/07-399adc95948b507d47e4fe295d45e492.png": {
+    "width": 852,
+    "height": 528,
+    "webp": "/assets-local/07-399adc95948b507d47e4fe295d45e492.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/07-399adc95948b507d47e4fe295d45e492-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/07-399adc95948b507d47e4fe295d45e492-768.webp"
+      },
+      {
+        "w": 852,
+        "url": "/assets-local/07-399adc95948b507d47e4fe295d45e492.webp"
+      }
+    ]
+  },
+  "/assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53.png": {
+    "width": 852,
+    "height": 528,
+    "webp": "/assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53-768.webp"
+      },
+      {
+        "w": 852,
+        "url": "/assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53.webp"
+      }
+    ]
+  },
+  "/assets-local/09-54086bca79dd4a4376e87b9e84913998.png": {
+    "width": 852,
+    "height": 528,
+    "webp": "/assets-local/09-54086bca79dd4a4376e87b9e84913998.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/09-54086bca79dd4a4376e87b9e84913998-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/09-54086bca79dd4a4376e87b9e84913998-768.webp"
+      },
+      {
+        "w": 852,
+        "url": "/assets-local/09-54086bca79dd4a4376e87b9e84913998.webp"
+      }
+    ]
+  },
+  "/assets-local/15-a492e36ca0a9c24f25fd57890872caf2.png": {
+    "width": 1920,
+    "height": 860,
+    "webp": "/assets-local/15-a492e36ca0a9c24f25fd57890872caf2.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/15-a492e36ca0a9c24f25fd57890872caf2-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/15-a492e36ca0a9c24f25fd57890872caf2-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/15-a492e36ca0a9c24f25fd57890872caf2-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/15-a492e36ca0a9c24f25fd57890872caf2.webp"
+      }
+    ]
+  },
+  "/assets-local/16-f638ac317d1ab75f169b8ceb13c2c6a0.png": {
+    "width": 1920,
+    "height": 860,
+    "webp": "/assets-local/16-f638ac317d1ab75f169b8ceb13c2c6a0.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/16-f638ac317d1ab75f169b8ceb13c2c6a0-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/16-f638ac317d1ab75f169b8ceb13c2c6a0-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/16-f638ac317d1ab75f169b8ceb13c2c6a0-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/16-f638ac317d1ab75f169b8ceb13c2c6a0.webp"
+      }
+    ]
+  },
+  "/assets-local/17-e93ae614cc4953d2b2b043085cb0250b.png": {
+    "width": 1920,
+    "height": 860,
+    "webp": "/assets-local/17-e93ae614cc4953d2b2b043085cb0250b.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/17-e93ae614cc4953d2b2b043085cb0250b-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/17-e93ae614cc4953d2b2b043085cb0250b-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/17-e93ae614cc4953d2b2b043085cb0250b-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/17-e93ae614cc4953d2b2b043085cb0250b.webp"
+      }
+    ]
+  },
+  "/assets-local/18-38f0fbe56b1d6f158768a9807f11974e.png": {
+    "width": 1920,
+    "height": 860,
+    "webp": "/assets-local/18-38f0fbe56b1d6f158768a9807f11974e.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/18-38f0fbe56b1d6f158768a9807f11974e-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/18-38f0fbe56b1d6f158768a9807f11974e-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/18-38f0fbe56b1d6f158768a9807f11974e-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/18-38f0fbe56b1d6f158768a9807f11974e.webp"
+      }
+    ]
+  },
+  "/assets-local/products/youjia-g2-1.jpg": {
+    "width": 1772,
+    "height": 1088,
+    "webp": "/assets-local/products/youjia-g2-1.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/products/youjia-g2-1-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/products/youjia-g2-1-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/products/youjia-g2-1-1280.webp"
+      },
+      {
+        "w": 1772,
+        "url": "/assets-local/products/youjia-g2-1.webp"
+      }
+    ]
+  },
+  "/assets-local/products/youjia-g2-2.jpg": {
+    "width": 1772,
+    "height": 1015,
+    "webp": "/assets-local/products/youjia-g2-2.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/products/youjia-g2-2-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/products/youjia-g2-2-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/products/youjia-g2-2-1280.webp"
+      },
+      {
+        "w": 1772,
+        "url": "/assets-local/products/youjia-g2-2.webp"
+      }
+    ]
+  },
+  "/assets-local/products/youjia-g2-3.png": {
+    "width": 1777,
+    "height": 2753,
+    "webp": "/assets-local/products/youjia-g2-3.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/products/youjia-g2-3-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/products/youjia-g2-3-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/products/youjia-g2-3-1280.webp"
+      },
+      {
+        "w": 1777,
+        "url": "/assets-local/products/youjia-g2-3.webp"
+      }
+    ]
+  },
+  "/assets-local/vr-cabins/fz-901x.jpg": {
+    "width": 635,
+    "height": 478,
+    "webp": "/assets-local/vr-cabins/fz-901x.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/vr-cabins/fz-901x-480.webp"
+      },
+      {
+        "w": 635,
+        "url": "/assets-local/vr-cabins/fz-901x.webp"
+      }
+    ]
+  },
+  "/assets-local/vr-cabins/fz-910s.jpg": {
+    "width": 635,
+    "height": 478,
+    "webp": "/assets-local/vr-cabins/fz-910s.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/vr-cabins/fz-910s-480.webp"
+      },
+      {
+        "w": 635,
+        "url": "/assets-local/vr-cabins/fz-910s.webp"
+      }
+    ]
+  },
+  "/assets-local/vr-cabins/fz-911.jpg": {
+    "width": 635,
+    "height": 478,
+    "webp": "/assets-local/vr-cabins/fz-911.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/vr-cabins/fz-911-480.webp"
+      },
+      {
+        "w": 635,
+        "url": "/assets-local/vr-cabins/fz-911.webp"
+      }
+    ]
+  },
+  "/assets-local/vr-cabins/fz-912.jpg": {
+    "width": 635,
+    "height": 478,
+    "webp": "/assets-local/vr-cabins/fz-912.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/vr-cabins/fz-912-480.webp"
+      },
+      {
+        "w": 635,
+        "url": "/assets-local/vr-cabins/fz-912.webp"
+      }
+    ]
+  },
+  "/assets-local/vr-cabins/fz-914.jpg": {
+    "width": 635,
+    "height": 478,
+    "webp": "/assets-local/vr-cabins/fz-914.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/vr-cabins/fz-914-480.webp"
+      },
+      {
+        "w": 635,
+        "url": "/assets-local/vr-cabins/fz-914.webp"
+      }
+    ]
+  },
+  "/assets-local/vr-cabins/fz-917.jpg": {
+    "width": 635,
+    "height": 478,
+    "webp": "/assets-local/vr-cabins/fz-917.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/vr-cabins/fz-917-480.webp"
+      },
+      {
+        "w": 635,
+        "url": "/assets-local/vr-cabins/fz-917.webp"
+      }
+    ]
+  },
+  "/assets-local/vr-cabins/vr-hero.jpg": {
+    "width": 1920,
+    "height": 622,
+    "webp": "/assets-local/vr-cabins/vr-hero.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/vr-cabins/vr-hero-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/vr-cabins/vr-hero-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/vr-cabins/vr-hero-1280.webp"
+      },
+      {
+        "w": 1920,
+        "url": "/assets-local/vr-cabins/vr-hero.webp"
+      }
+    ]
+  },
+  "/assets-local/vr-select-elevator.jpg": {
+    "width": 1385,
+    "height": 860,
+    "webp": "/assets-local/vr-select-elevator.webp",
+    "srcset": [
+      {
+        "w": 480,
+        "url": "/assets-local/vr-select-elevator-480.webp"
+      },
+      {
+        "w": 768,
+        "url": "/assets-local/vr-select-elevator-768.webp"
+      },
+      {
+        "w": 1280,
+        "url": "/assets-local/vr-select-elevator-1280.webp"
+      },
+      {
+        "w": 1385,
+        "url": "/assets-local/vr-select-elevator.webp"
+      }
+    ]
+  }
+}

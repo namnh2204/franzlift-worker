@@ -1,0 +1,19 @@
+services:
+  elevator-web:
+    build: .
+    container_name: elevator-web
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    networks:
+      - frontend_net
+
+networks:
+  frontend_net:
+    external: true

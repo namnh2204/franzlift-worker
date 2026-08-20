@@ -1,0 +1,34 @@
+{
+  "name": "franzlift",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./public/app.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./public/app.css --watch",
+    "copy:vendor": "node scripts/copy-vendor.js",
+    "optimize:images": "node scripts/optimize-images.js",
+    "build": "npm run optimize:images && npm run build:css && npm run copy:vendor",
+    "start": "node server.js",
+    "dev": "node server.js",
+    "dev:worker": "wrangler dev",
+    "deploy:worker": "wrangler deploy",
+    "migrate:worker": "node scripts/migrate-cloudflare.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "sanitize-html": "^2.17.5",
+    "sharp": "^0.33.5",
+    "tinymce": "^8.6.0"
+  },
+  "devDependencies": {
+    "aos": "^2.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "swiper": "^11.1.14",
+    "tailwindcss": "^3.4.14",
+    "wrangler": "^4.30.0"
+  }
+}

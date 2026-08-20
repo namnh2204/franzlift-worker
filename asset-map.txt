@@ -1,0 +1,14 @@
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20221027/c350d68021ef0e890ebadb3af752b40a.svg => /assets-local/01-c350d68021ef0e890ebadb3af752b40a.svg
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20250522/bce74fae6c8eb1eba141044b0b26d970.png => /assets-local/02-bce74fae6c8eb1eba141044b0b26d970.png
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20250522/2aeef62d95c474ce21e032cf459b418e.png => /assets-local/03-2aeef62d95c474ce21e032cf459b418e.png
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20250522/d0c9bfc93f3cfe73f93e1cb285769618.png => /assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618.png
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20250522/df2488e7f314f5e3ede37268cf238bb0.png => /assets-local/05-df2488e7f314f5e3ede37268cf238bb0.png
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20250524/8c3cfe6ed48e0d4939b790419bf12d84.png => /assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.png
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20250524/399adc95948b507d47e4fe295d45e492.png => /assets-local/07-399adc95948b507d47e4fe295d45e492.png
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20250524/b83d8158bc0dfa9fd0a1443de5583b53.png => /assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53.png
+https://fulangc0516.oss-cn-shanghai.aliyuncs.com/fulangc0516/uploads/20250524/54086bca79dd4a4376e87b9e84913998.png => /assets-local/09-54086bca79dd4a4376e87b9e84913998.png
+https://en.franzlift.com/assets/addons/cms/frontend/images/jt.svg => /assets-local/10-jt.svg
+https://en.franzlift.com/assets/addons/cms/frontend/images/ahht1.svg => /assets-local/11-ahht1.svg
+https://en.franzlift.com/assets/addons/cms/frontend/images/ahht2.svg => /assets-local/12-ahht2.svg
+https://en.franzlift.com/assets/addons/cms/frontend/images/jt2.svg => /assets-local/13-jt2.svg
+https://en.franzlift.com/assets/addons/cms/frontend/images/ssan.svg => /assets-local/14-ssan.svg
