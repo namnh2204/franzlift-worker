@@ -1,4 +1,17 @@
-# AGENTS.md
+## Cloudflare Deployment & CI/CD
+
+- **Production Domain:** `https://franzlift.vn` (and `www.franzlift.vn`)
+- **Worker Script:** `franzlift` (Cloudflare Worker runtime with assets in `public/`)
+- **Cloudflare Account ID:** `7c47ea5e0254b9df48dc8df9c4eee6ed`
+- **GitHub Repository:** `namnh2204/franzlift-worker` (branch: `main`)
+- **Automated CI/CD:** `.github/workflows/deploy.yml`
+  - Runs automatically on `git push` to `main` or manually via `workflow_dispatch`.
+  - Uses `npm ci`, `npm run build`, and `npx wrangler deploy`.
+  - GitHub Secrets configured: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
+  - To deploy manually from terminal:
+    ```bash
+    CLOUDFLARE_API_TOKEN="..." CLOUDFLARE_ACCOUNT_ID="..." npx wrangler deploy
+    ```
 
 ## Architecture
 
