@@ -1,0 +1,5 @@
+---
+import Base from "../layouts/Base.astro"; import InnerHero from "../components/site/InnerHero.astro"; import Picture from "../components/site/Picture.astro"; import { getSiteModel,heroImgs } from "../lib/site";
+const model=await getSiteModel(Astro); const {content}=model; const projects=content.projects||[];
+---
+<Base model={model} page="projects"><InnerHero image={heroImgs[3]} title={content["projects.title"]||"Dự Án Tiêu Biểu"} intro={content["projects.intro"]||""}/><main class="wrap py-16 lg:py-24"><div class="fl-cat-grid">{projects.map((p:any[],i:number)=>{const images=[p[2]||heroImgs[i%4],...(Array.isArray(p[3])?p[3].filter(Boolean):[])];return <article class="fl-cat-card" data-aos="fade-up" data-aos-delay={(i%3)*80}><div class="fl-cat-card-img" data-case-rotator>{images.map((src:string,j:number)=><Picture src={src} alt={p[0]} active={j===0} sizes="(max-width:1023px) 50vw, 33vw"/>)}</div><div class="fl-cat-card-body"><h2>{p[0]}</h2><p>{p[1]}</p></div></article>})}</div></main></Base>

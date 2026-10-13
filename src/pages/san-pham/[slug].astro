@@ -1,0 +1,65 @@
+---
+import Base from "../../layouts/Base.astro";
+import Picture from "../../components/site/Picture.astro";
+import { getProductPage } from "../../lib/site";
+import { PortableText } from "emdash/ui";
+
+const slug = Astro.params.slug || "";
+const { model, product } = await getProductPage(Astro, slug);
+if (!product) return Astro.rewrite("/404");
+const gallery = product.gallery.length ? product.gallery : [product.image];
+const active = model.products.findIndex((p) => p.slug === product.slug);
+const hasPT = Array.isArray(product.content) && product.content.length > 0;
+---
+<Base model={model} page="productDetail" product={product}>
+	<section class="fl-detail-hero">
+		<Picture src={product.image} alt={product.name} eager sizes="100vw" />
+		<div><p>Sản phẩm</p><h1>{product.name}</h1></div>
+	</section>
+	<main class="fl-detail-page wrap">
+		<nav class="fl-detail-tabs">
+			{model.products.map((p, i) => <a class={i === active ? "active" : ""} href={`/san-pham/${p.slug}`}>{p.name}</a>)}
+		</nav>
+		<section class="fl-detail-grid">
+			<div><Picture src={product.image} alt={product.name} sizes="(max-width:1023px) 100vw, 55vw" /></div>
+			<article><span>FRANZ HOME LIFT</span><h2>{product.name}</h2><p>{product.summary}</p><a href="tel:0939612555">Gọi 0939.612.555</a></article>
+		</section>
+		{(hasPT || product.body) && (
+			<section class="fl-detail-body">
+				<div class="fl-rich-text">
+					{hasPT ? <PortableText value={product.content} /> : <div set:html={product.body} />}
+				</div>
+				{product.byline && (
+					<footer class="fl-post-byline">
+						<div class="fl-byline-avatar-circle" aria-hidden="true">
+							{product.byline.avatarUrl ? (
+								<img src={product.byline.avatarUrl} alt={product.byline.displayName} />
+							) : (
+								<span>{product.byline.displayName.charAt(0)}</span>
+							)}
+						</div>
+						<div class="fl-byline-info">
+							<div class="fl-byline-meta-row">
+								<span class="fl-byline-kicker">Kỹ sư phụ trách &amp; Cố vấn kỹ thuật</span>
+								<span class="fl-byline-verified" title="Chứng nhận chuyên môn">
+									<svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+									Đã kiểm định
+								</span>
+							</div>
+							<h4 class="fl-byline-name">{product.byline.displayName}</h4>
+							{product.byline.bio && <p class="fl-byline-bio">{product.byline.bio}</p>}
+						</div>
+					</footer>
+				)}
+			</section>
+		)}
+		<section class="fl-detail-content fl-gallery-swiper swiper">
+			<div class="swiper-wrapper">
+				{gallery.map((src) => <div class="swiper-slide"><Picture src={src} alt={product.name} sizes="(max-width:1023px) 86vw, 33vw" /></div>)}
+			</div>
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+			<div class="swiper-pagination"></div>
+		</section>
+	</main>
+</Base>

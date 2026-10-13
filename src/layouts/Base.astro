@@ -1,0 +1,112 @@
+---
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead, WidgetArea } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { getSiteSettings } from "emdash";
+import { formatPhone, heroImgs, pageUrl, type Post, type Product, type SiteModel } from "../lib/site";
+import Picture from "../components/site/Picture.astro";
+
+interface Props {
+	model: SiteModel;
+	page: "home" | "about" | "products" | "services" | "projects" | "blog" | "tech" | "contact" | "vr" | "productDetail" | "postDetail" | "notfound";
+	title?: string;
+	description?: string;
+	image?: string;
+	product?: Product;
+	post?: Post;
+	status?: number;
+}
+const { model, page, product, post, status, title, description, image } = Astro.props;
+if (status) Astro.response.status = status;
+const { content } = model;
+
+// EmDash native settings (Social links, Site title, Tagline, etc.)
+const siteSettings = await getSiteSettings().catch(() => ({} as any));
+const nativeSocial = siteSettings?.social || {};
+
+const siteName = content["branding.siteName"] || siteSettings?.title || "Thang Máy Nhập Khẩu Franz";
+const logo = content["branding.logo"] || siteSettings?.logo?.url || "/assets-local/logo-header.svg";
+const logoLight = content["branding.logoLight"] || "/assets-local/logo-header-white.svg";
+const hotline = content["contact.hotline"] && content["contact.hotline"] !== "............" ? content["contact.hotline"] : "0939612555";
+const salesPhone = content["contact.salesPhone"] || hotline;
+const techPhone = content["contact.techPhone"] || "";
+const email = content["contact.email"] && content["contact.email"] !== "............" ? content["contact.email"] : "homeliftvietnam@gmail.com";
+const address = content["contact.address"] && content["contact.address"] !== "............" ? content["contact.address"] : "Số 55A Louis I, Louis City, Đại Mỗ, Hà Nội";
+const zalo = content["contact.zalo"] || `https://zalo.me/${hotline}`;
+
+// Prefer native social link configured in EmDash admin (/admin/settings)
+const facebook = nativeSocial.facebook || content["contact.facebook"] || "https://www.facebook.com/profile.php?id=61591522652884";
+const facebookName = content["contact.facebookName"] || siteName;
+const facebookCover = content["contact.facebookCover"] || heroImgs[0];
+const facebookAvatar = content["contact.facebookAvatar"] || logo;
+const defaultTitles: Record<string, string> = {
+	home: content["home.title"] || `${siteName} | Thang Máy Gia Đình Nhập Khẩu`,
+	about: `${content["about.title"] || "Về " + siteName} | ${siteName}`,
+	products: `${content["products.title"] || "Sản phẩm"} | ${siteName}`,
+	services: `${content["services.title"] || "Dịch vụ"} | ${siteName}`,
+	projects: `${content["projects.title"] || "Dự án"} | ${siteName}`,
+	blog: `${content["blog.title"] || "Tin tức"} | ${siteName}`,
+	tech: `Công Nghệ | ${siteName}`,
+	contact: `${content["contact.title"] || "Liên hệ"} | ${siteName}`,
+	vr: `${content["vr.title"] || "Trải nghiệm 360° VR"} | ${siteName}`,
+	notfound: `Không tìm thấy trang | ${siteName}`,
+};
+const defaultDescriptions: Record<string, string> = {
+	home: content["home.metaDescription"] || `${siteName} chuyên cung cấp, lắp đặt và bảo trì thang máy gia đình nhập khẩu chính hãng tại Việt Nam.`,
+	about: content["about.p1"] || "", products: content["products.intro"] || "", services: content["services.intro"] || "",
+	projects: content["projects.intro"] || "", blog: content["blog.intro"] || "", contact: content["contact.intro"] || "",
+	tech: "Công nghệ thang máy Franz: hố pit siêu nông, không phòng máy, vận hành điện 220V, an toàn chuẩn châu Âu.",
+	vr: "Trải nghiệm 360° các mẫu cabin thang máy Franz và lựa chọn thiết kế phù hợp với không gian của bạn.", notfound: "Nội dung không tồn tại hoặc đã được di chuyển.",
+};
+const pageTitle = title || (product ? `${product.name} | ${siteName}` : post ? `${post.title} | Tin tức ${siteName}` : defaultTitles[page]);
+const metaDescription = description || product?.summary || post?.excerpt || defaultDescriptions[page] || defaultDescriptions.home;
+const canonical = new URL(Astro.url.pathname, Astro.url.origin).href;
+const ogImage = new URL(image || product?.image || post?.image || heroImgs[0], Astro.url.origin).href;
+const nav = [["Trang chủ", "/", "home"], ["Giới thiệu", pageUrl.about, "about"], ["Sản phẩm", pageUrl.products, "products"], ["Dịch vụ", pageUrl.services, "services"], ["Dự án", pageUrl.projects, "projects"], ["Tin tức", pageUrl.blog, "blog"], ["Liên hệ", pageUrl.contact, "contact"]];
+const sameAs = [zalo, facebook, nativeSocial.youtube, nativeSocial.instagram, nativeSocial.twitter, nativeSocial.linkedin].filter(Boolean);
+const organization = { "@context": "https://schema.org", "@type": "Organization", name: siteName, url: `${Astro.url.origin}/`, logo: new URL(logo, Astro.url.origin).href, contactPoint: [{ "@type": "ContactPoint", telephone: `+84${salesPhone.replace(/\D/g, "").replace(/^0/, "")}`, contactType: "sales", areaServed: "VN" }], sameAs };
+const localBusiness = { "@context": "https://schema.org", "@type": "HomeAndConstructionBusiness", name: siteName, image: ogImage, url: `${Astro.url.origin}/`, telephone: `+84${salesPhone.replace(/\D/g, "").replace(/^0/, "")}`, email, address: { "@type": "PostalAddress", streetAddress: address, addressLocality: "Hà Nội", addressCountry: "VN" }, areaServed: "VN" };
+const structured = page === "home" ? [organization, localBusiness] : page === "contact" ? [localBusiness] : product ? [{ "@context": "https://schema.org", "@type": "Product", name: product.name, description: product.summary, image: ogImage, brand: { "@type": "Brand", name: "Franz" }, category: "Thang máy gia đình", url: canonical }] : post ? [{ "@context": "https://schema.org", "@type": "BlogPosting", headline: post.title, description: post.excerpt, image: ogImage, url: canonical, publisher: { "@type": "Organization", name: siteName } }] : [];
+const pageCtx = createPublicPageContext({ Astro, kind: product || post ? "content" : "custom", pageType: post ? "article" : "website", title: pageTitle, pageTitle, description: metaDescription, canonical, image: ogImage, siteName, content: product ? { collection: "products", id: product.dataId!, slug: product.slug } : post ? { collection: "posts", id: post.dataId!, slug: post.slug } : undefined });
+---
+<!doctype html>
+<html lang="vi">
+<head>
+	<!-- Google Tag Manager -->
+	<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-5T8ZKTDT');</script>
+	<!-- End Google Tag Manager -->
+	<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>{pageTitle}</title><meta name="description" content={metaDescription} /><link rel="canonical" href={canonical} />
+	<meta property="og:type" content={post ? "article" : "website"} /><meta property="og:title" content={pageTitle} /><meta property="og:description" content={metaDescription} /><meta property="og:url" content={canonical} /><meta property="og:image" content={ogImage} />
+	<link rel="icon" href="/favicon.ico" sizes="any" /><link rel="preconnect" href="https://fonts.googleapis.com" /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="/vendor/swiper-bundle.min.css" /><link rel="stylesheet" href="/vendor/aos.css" /><link rel="stylesheet" href="/app.css" />
+	<EmDashHead page={pageCtx} />
+	{structured.map((value) => <script is:inline type="application/ld+json" set:html={JSON.stringify(value)} />)}
+	<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-N0CL8QJPFD"></script>
+	<script is:inline>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-N0CL8QJPFD");</script>
+</head>
+<body>
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5T8ZKTDT"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+	<EmDashBodyStart page={pageCtx} />
+	<header id="siteHeader" class:list={["fixed top-0 inset-x-0 z-50 transition-all duration-300", page !== "home" && "solid"]}>
+		<div class="wrap flex h-20 items-center gap-8"><a href="/" class="relative block h-10 w-44 shrink-0"><img class="logo-light absolute inset-0 h-full w-full object-contain object-left transition-opacity" src={logoLight} alt={siteName} /><img class="logo-dark absolute inset-0 h-full w-full object-contain object-left transition-opacity" src={logo} alt={siteName} /></a>
+		<nav class="ml-auto hidden items-center gap-7 lg:flex">{nav.map(([label, url, key]) => <a class:list={["nav-link", page === key || (key === "products" && page === "productDetail") || (key === "blog" && page === "postDetail") ? "active" : ""]} href={url}>{label}</a>)}</nav>
+		<a class="header-phone ml-auto hidden font-extrabold lg:block" href={`tel:${hotline}`}>{formatPhone(salesPhone)}</a><button id="mobileMenuButton" class="ml-auto rounded-xl bg-white/90 px-3 py-2 text-2xl text-franz shadow lg:hidden" type="button" aria-label="Menu">☰</button></div>
+		<nav id="mobileNav" class="hidden border-t border-line bg-white px-5 py-4 shadow-xl lg:hidden"><div class="flex flex-col gap-3 text-sm font-semibold text-ink">{nav.map(([label, url]) => <a href={url}>{label}</a>)}</div></nav>
+	</header>
+	<slot />
+	<footer class="fl-footer"><div class="wrap fl-footer-grid"><div class="fl-footer-brand"><img class="h-16 w-44 object-contain object-left" src={logoLight} alt={siteName} /><p>{siteName} – giải pháp thang máy gia đình nhập khẩu chính hãng, an toàn và bền bỉ.</p></div>
+	<div class="fl-footer-col"><h3>Liên hệ &amp; Showroom</h3><p><b>Showroom Hà Nội:</b><br />{address}</p><p><b>Kinh doanh:</b> <a href={`tel:${salesPhone}`}>{formatPhone(salesPhone)}</a></p>{techPhone && <p><b>Kỹ thuật:</b> <a href={`tel:${techPhone}`}>{formatPhone(techPhone)}</a></p>}<p><b>Email:</b> <a href={`mailto:${email}`}>{email}</a></p><div class="fl-footer-socials"><a class="fl-footer-zalo" href={zalo} target="_blank" rel="noopener">Chat Zalo OA</a></div>
+	<div class="fl-footer-facebook-card"><div class="fl-fb-label">{facebookName}</div><div class="fl-fb-fallback"><div class="fl-fb-cover"><Picture src={facebookCover} alt={facebookName} /></div><div class="fl-fb-main"><div class="fl-fb-avatar"><Picture src={facebookAvatar} alt={facebookName} /></div><div><b>{facebookName}</b><span>Fanpage chính thức</span></div></div><div class="fl-fb-actions"><a href={facebook} target="_blank" rel="noopener">Theo dõi Fanpage</a><a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(facebook)}`} target="_blank" rel="noopener">Chia sẻ</a></div></div></div></div>
+	<div class="fl-footer-col"><h3>Liên kết</h3><nav class="fl-footer-nav">{nav.map(([label, url]) => <a href={url}>{label}</a>)}</nav></div></div><div class="wrap fl-footer-base"><p>© {new Date().getFullYear()} {siteName}. Giải pháp thang máy gia đình nhập khẩu chính hãng.</p></div></footer>
+	<WidgetArea name="floating_buttons" class="fl-floating-widget-area" />
+	<div class="mobile-cta-bar"><a href={`tel:${hotline}`} title="Gọi tư vấn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" /></svg></a><a href={zalo} target="_blank" rel="noopener" title="Chat Zalo" aria-label="Chat Zalo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#0068FF" /><text x="24" y="31" font-family="Arial" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Zalo</text></svg></a></div>
+	<script is:inline src="/vendor/swiper-bundle.min.js"></script><script is:inline src="/vendor/aos.js"></script><script is:inline src="/site.js"></script>
+	<EmDashBodyEnd page={pageCtx} />
+</body></html>

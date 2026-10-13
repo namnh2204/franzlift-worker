@@ -1,0 +1,5 @@
+---
+import Base from "../../layouts/Base.astro"; import InnerHero from "../../components/site/InnerHero.astro"; import Picture from "../../components/site/Picture.astro"; import { getSiteModel,heroImgs } from "../../lib/site";
+const model=await getSiteModel(Astro); const {content,posts}=model;
+---
+<Base model={model} page="blog"><InnerHero image={heroImgs[1]} title={content["blog.title"]||"Blog & Tin Tức"} intro={content["blog.intro"]||""}/><main class="wrap py-16 lg:py-24"><div class="fl-news-grid">{posts.map((p,i)=><a class="fl-news-link" href={`/tin-tuc/${p.slug}`} data-aos="fade-up" data-aos-delay={(i%3)*80}><Picture src={p.image||heroImgs[i%4]} alt={p.title} sizes="(max-width:640px) 84vw, 33vw"/><div><time>{p.date}</time><h2 class="fl-news-h">{p.title}</h2><p>{p.excerpt}</p></div></a>)}</div></main></Base>

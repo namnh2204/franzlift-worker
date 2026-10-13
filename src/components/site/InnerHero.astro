@@ -1,0 +1,9 @@
+---
+import Picture from "./Picture.astro";
+interface Props { image: string; eyebrow?: string; title: string; intro?: string; tall?: boolean }
+const { image, eyebrow = "Franz Home Lift", title, intro, tall = false } = Astro.props;
+---
+<section class:list={["relative overflow-hidden bg-ink pt-20", tall ? "min-h-[460px]" : "min-h-[420px]"]}>
+	<Picture src={image} alt={title} class="absolute inset-0 h-full w-full object-cover" eager sizes="100vw" />
+	<div class="absolute inset-0 bg-black/55"></div><div class:list={["wrap relative z-10 flex items-center", tall ? "min-h-[460px]" : "min-h-[420px]"]}><div data-aos="fade-up" class="text-white"><p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">{eyebrow}</p><h1 class="font-display text-4xl font-extrabold lg:text-5xl">{title}</h1>{intro && <p class="mt-4 max-w-2xl text-white/80">{intro}</p>}</div></div>
+</section>

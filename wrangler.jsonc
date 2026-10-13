@@ -1,58 +1,34 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "franzlift",
-  "main": "worker/index.js",
-  "compatibility_date": "2026-08-08",
-  "compatibility_flags": ["nodejs_compat"],
-  "workers_dev": true,
-  "preview_urls": false,
-  "observability": {
-    "enabled": true,
-    "head_sampling_rate": 1
-  },
-  "vars": {
-    "ACCESS_TEAM_DOMAIN": "https://thuanphat.cloudflareaccess.com",
-    "ACCESS_AUD": "914d8d9dfadd9574a3f7e05b5b16d9bea87dff5519492a3fbd26f14c636cd678"
-  },
-  "ratelimits": [
-    {
-      "name": "PUBLIC_RATE_LIMITER",
-      "namespace_id": "1001",
-      "simple": { "limit": 120, "period": 60 }
-    },
-    {
-      "name": "ADMIN_RATE_LIMITER",
-      "namespace_id": "1002",
-      "simple": { "limit": 10, "period": 60 }
-    }
-  ],
-  "rules": [
-    {
-      "type": "Text",
-      "globs": ["**/*.ejs"],
-      "fallthrough": true
-    }
-  ],
-  "assets": {
-    "directory": "./public",
-    "binding": "ASSETS",
-    "run_worker_first": true
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "franzlift",
-      "database_id": "ad1db6be-f0ce-41fd-8936-e4b1c89436f6",
-      "migrations_dir": "migrations"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "UPLOADS",
-      "bucket_name": "franzlift-uploads"
-    }
-  ],
-  "images": {
-    "binding": "IMAGES"
-  }
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "franzlift-emdash",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": true,
+	"routes": [
+		{ "pattern": "franzlift.vn", "custom_domain": true },
+		{ "pattern": "www.franzlift.vn", "custom_domain": true },
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "franzlift-emdash",
+			"database_id": "3096b02d-4413-4982-9926-969b959f1ef0"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "franzlift-emdash-media"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "01fc2789cbb14300a212ddc1b906dd80"
+		}
+	],
+	"triggers": {
+		"crons": ["* * * * *", "*/2 * * * *"]
+	}
 }

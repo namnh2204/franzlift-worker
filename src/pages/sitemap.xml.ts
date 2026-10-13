@@ -1,0 +1,4 @@
+import type { APIRoute } from "astro";
+import { getSiteModel } from "../lib/site";
+const esc=(s:string)=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+export const GET: APIRoute = async (ctx) => { const model=await getSiteModel(ctx); const paths=["/","/gioi-thieu","/san-pham","/dich-vu","/du-an","/tin-tuc","/cong-nghe","/360VR","/lien-he",...model.products.map(p=>`/san-pham/${p.slug}`),...model.posts.map(p=>`/tin-tuc/${p.slug}`)]; const today=new Date().toISOString().slice(0,10); return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map(p=>`  <url><loc>${esc(new URL(p,ctx.url.origin).href)}</loc><lastmod>${today}</lastmod></url>`).join("\n")}\n</urlset>`,{headers:{"content-type":"application/xml; charset=utf-8"}}); };

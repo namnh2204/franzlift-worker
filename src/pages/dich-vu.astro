@@ -1,0 +1,5 @@
+---
+import Base from "../layouts/Base.astro"; import InnerHero from "../components/site/InnerHero.astro"; import { formatPhone,getSiteModel,heroImgs } from "../lib/site";
+const model=await getSiteModel(Astro); const {content}=model; const services=content.services||[]; const phone=content["contact.salesPhone"]||content["contact.hotline"]||"0939612555"; const zalo=content["contact.zalo"]||`https://zalo.me/${phone}`;
+---
+<Base model={model} page="services"><InnerHero image={heroImgs[2]} title={content["services.title"]||"Dịch Vụ Của Franz"} intro={content["services.intro"]||""}/><main class="wrap py-16 lg:py-24"><div class="fl-feature-grid">{services.map((s:any[],i:number)=><article class="fl-feature-card" data-aos="fade-up" data-aos-delay={(i%3)*80}><span>{String(i+1).padStart(2,"0")}</span><h2>{s[0]}</h2><p>{s[1]}</p></article>)}</div><div class="mt-12 flex flex-wrap gap-4"><a class="btn btn-primary" href={`tel:${phone}`}>Gọi {formatPhone(phone)}</a><a class="btn btn-outline" href={zalo} target="_blank" rel="noopener">Chat Zalo</a></div></main></Base>

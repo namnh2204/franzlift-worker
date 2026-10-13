@@ -1,35 +1,32 @@
 {
-  "name": "franzlift",
-  "version": "2.0.0",
+  "name": "haslift-emdash",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
+  "emdash": {
+    "seed": "seed/seed.json"
+  },
   "scripts": {
-    "build:css": "tailwindcss -i ./src/input.css -o ./public/app.css --minify",
-    "watch:css": "tailwindcss -i ./src/input.css -o ./public/app.css --watch",
-    "copy:vendor": "node scripts/copy-vendor.js",
-    "optimize:images": "node scripts/optimize-images.js",
-    "build": "npm run optimize:images && npm run build:css && npm run copy:vendor",
-    "start": "node server.js",
-    "dev": "node server.js",
-    "dev:worker": "wrangler dev",
-    "deploy:worker": "wrangler deploy",
-    "migrate:worker": "node scripts/migrate-cloudflare.js"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "bootstrap": "emdash bootstrap",
+    "typecheck": "astro check"
   },
   "dependencies": {
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "jose": "^6.2.9",
-    "multer": "^1.4.5-lts.1",
-    "sanitize-html": "^2.17.7",
-    "sharp": "^0.35.3",
-    "tinymce": "^8.8.2"
+    "@astrojs/cloudflare": "^14.0.0",
+    "@astrojs/react": "^6.0.0",
+    "@emdash-cms/cloudflare": "^0.35.0",
+    "astro": "^7.0.0",
+    "emdash": "^0.35.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "aos": "^2.3.4",
-    "autoprefixer": "^10.5.4",
-    "postcss": "^8.5.26",
-    "swiper": "^14.1.0",
-    "tailwindcss": "^3.4.14",
+    "@astrojs/check": "^0.9.7",
+    "@cloudflare/workers-types": "^4.20260305.1",
     "wrangler": "^4.124.0"
-  }
+  },
+  "packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b"
 }

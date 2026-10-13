@@ -1,0 +1,4 @@
+---
+import Base from "../layouts/Base.astro"; import {getSiteModel,pageUrl} from "../lib/site"; const model=await getSiteModel(Astro);
+---
+<Base model={model} page="notfound" status={404}><section class="relative min-h-[60vh] overflow-hidden bg-ink pt-20 flex items-center"><div class="wrap relative z-10 text-center text-white"><p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">404</p><h1 class="font-display text-4xl font-extrabold lg:text-5xl">Không tìm thấy trang</h1><p class="mt-4 text-white/80">Nội dung bạn tìm không tồn tại hoặc đã được di chuyển.</p><div class="mt-8 flex flex-wrap justify-center gap-4"><a class="btn btn-primary" href="/">Về trang chủ</a><a class="btn btn-ghost" href={pageUrl.products}>Xem sản phẩm</a></div></div></section></Base>

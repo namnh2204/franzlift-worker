@@ -1,29 +1,41 @@
 # Dependencies
 node_modules/
 
-# Local environment and credentials
+# Build output
+dist/
+
+# Astro
+.astro/
+.emdash/migrations.json
+
+# Data
+data.db
+data.db-shm
+data.db-wal
+/uploads/
+
+# Environment
 .env
 .env.*
 !.env.example
-deployment/.env
 
-# Cloudflare/Wrangler local state
+# Wrangler local secrets & state
 .wrangler/
+deployment/.env
 .dev.vars
 .dev.vars.*
 
-# Runtime logs and temporary files
+# IDE
+.vscode/*
+!.vscode/mcp.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
 *.log
 npm-debug.log*
-.DS_Store
-*.swp
-*~
-
-# Coverage and tool caches
-coverage/
-.cache/
-.pi/
-
-# CMS uploads are runtime data stored in R2 in Cloudflare.
-# Keep metadata/content JSON tracked; do not commit uploaded binaries.
-data/uploads/

@@ -1,91 +1,166 @@
-## Cloudflare Deployment & CI/CD
+This is an EmDash site — a CMS built on Astro with a full admin UI.
 
-- **Production Domain:** `https://franzlift.vn` (and `www.franzlift.vn`)
-- **Worker Script:** `franzlift` (Cloudflare Worker runtime with assets in `public/`)
+It is the production origin for **`franzlift.vn`** (Thang Máy Nhập Khẩu Franz), a Vietnamese
+imported-elevator marketing site. It is a migration of the legacy EJS Worker, preserving the
+original page structure, Vietnamese routes, Swiper carousels, AOS effects, galleries, SEO
+metadata, and structured data.
+
+> **Read `OPERATIONS.md` before deploying, changing domains, or touching auth.** It documents
+> the Cloudflare resources, the `franzlift.vn` binding, and two unresolved open items
+> (passkey origin mismatch, obsolete legacy Worker).
+
+## Commands
+
+```bash
+pnpm dev          # Astro dev server
+pnpm build        # astro build
+pnpm deploy       # astro build && wrangler deploy
+pnpm typecheck    # astro check
+npx emdash types  # Regenerate collection types from a running site
+```
+
+Local admin: `http://localhost:4321/_emdash/admin`.
+Production admin: see `OPERATIONS.md` — **not** yet usable on the apex domain.
+
+## Deployment & CI/CD Credentials
+
+- **Production Domain:** `https://franzlift.vn`
 - **Cloudflare Account ID:** `7c47ea5e0254b9df48dc8df9c4eee6ed`
-- **GitHub Repository:** `namnh2204/franzlift-worker` (branch: `main`)
-- **Automated CI/CD:** `.github/workflows/deploy.yml`
-  - Runs automatically on `git push` to `main` or manually via `workflow_dispatch`.
-  - Uses `npm ci`, `npm run build`, and `npx wrangler deploy`.
-  - GitHub Secrets configured: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
-  - To deploy manually from terminal:
-    ```bash
-    CLOUDFLARE_API_TOKEN="..." CLOUDFLARE_ACCOUNT_ID="..." npx wrangler deploy
-    ```
+- **Worker:** `franzlift-emdash` (Wrangler deploy) or legacy `franzlift` in `../franzlift-worker`
+- **GitHub Secrets:** `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` in `namnh2204/franzlift-worker` & `namnh2204/thuanphat-worker`
 
-## Architecture
+## Key Files
 
-- Franzlift is a Node.js 22 application using Express and server-rendered EJS.
-- Main runtime: `server.js`.
-- Public template: `views/site.ejs`.
-- Admin CMS: `/admin`, implemented by `views/admin.ejs` and `public/admin.js`.
-- Browser behavior: `public/site.js`, Swiper, and AOS.
-- Tailwind source: `src/input.css`; generated output: `public/app.css`.
-- Content is stored in `data/content.json`; there is no database.
-- Admin uploads are converted to responsive WebP files under `data/uploads/` and recorded in `data/uploads-map.json`.
-- Build-time image metadata is stored in `data/image-map.json`.
+| File | Purpose |
+| --- | --- |
+| `astro.config.mjs` | Astro config with `emdash()`, D1 + R2 bindings, `site: "https://franzlift.vn"` |
+| `wrangler.jsonc` | Worker name, bindings, custom-domain routes, cron triggers |
+| `src/worker.ts` | Worker entry; hardcodes the `www` → apex 308 redirect |
+| `src/live.config.ts` | EmDash loader registration (boilerplate — don't modify) |
+| `seed/seed.json` | Schema + seeded content for all 10 collections |
+| `src/lib/site.ts` | Content-fetching layer: `getSiteModel`, `getProductPage`, `getPostPage`, types |
+| `src/lib/legacy.ts` | `legacyProductSlug()` for old numeric-ID URL redirects |
+| `src/layouts/Base.astro` | Base layout: header, footer, SEO, structured data, widget area |
+| `public/app.css` | Hand-written stylesheet — the real source of visual truth |
+| `emdash-env.d.ts` | Generated collection types |
 
-## Live Deployment
+## Styling
 
-- Domain: `https://franzlift.vn`.
-- Server: `namnh@192.168.1.141`.
-- Server project directory: `/home/namnh/workspace/franzlift`.
-- Local workspace: `/home/namnh/franzlift-work`.
-- Docker Compose service and container: `elevator-web`.
-- Application port: `3000`, published as `3000:3000`.
-- Compose uses the external Docker network `frontend_net`. It must already exist, and the reverse proxy must be connected to it.
+Styling is **plain hand-written CSS in `public/app.css`**, loaded via a `<link>` in
+`Base.astro`. There is no Tailwind, no `src/styles/` tokens file, and no design-token layer.
 
-## Data Persistence
+Class names are prefixed `fl-` (e.g. `.fl-detail-hero`, `.fl-detail-body`, `.fl-rich-text`,
+`.fl-post-byline`). To change visuals, edit `public/app.css` directly.
 
-- Compose bind-mounts server `./data` to container `/app/data`.
-- The server's `data/` directory is authoritative and survives image rebuilds.
-- Admin edits can change `data/content.json`, `data/uploads-map.json`, and files under `data/uploads/` at any time.
-- Always pull live `data/` before making local changes or deploying. Pushing stale local data can destroy live admin edits and uploads.
-- Preserve the freshly pulled `data/` when syncing the workspace back to the server.
+Some markup still carries Tailwind-looking utility classes from earlier edits, but **no
+Tailwind build processes them** — they are inert. Style via `fl-` classes in `app.css`
+instead of adding more utility classes.
 
-## Build Commands
+Webfont: **Inter** (400–800) via `fonts:` in `astro.config.mjs`.
 
-- Install exact dependencies: `npm ci`.
-- Run locally: `npm start` or `npm run dev`.
-- Rebuild CSS after changing `src/input.css`, Tailwind classes in EJS, or Tailwind classes in public JavaScript: `npm run build:css`.
-- Complete production build validation: `npm run build`.
-- The complete build optimizes images, writes `data/image-map.json`, builds `public/app.css`, and copies Swiper, AOS, and TinyMCE into `public/vendor/`.
+## Content model
 
-## Safe Deployment
+Ten collections, all defined in `seed/seed.json`:
 
-1. Pull current live data before editing:
+| Collection | Label |
+| --- | --- |
+| `site_data` | Cấu hình website (singleton, id `config`) |
+| `products` | Sản phẩm |
+| `posts` | Tin tức |
+| `projects` | Dự án tiêu biểu |
+| `services` | Dịch vụ |
+| `tech_items` | Công nghệ |
+| `vr_cabins` | Mẫu Cabin 360° VR |
+| `hero_slides` | Slide Hero Trang chủ |
+| `reasons` | Lý do lựa chọn |
+| `stats` | Thống kê năng lực |
 
-   `rsync -az namnh@192.168.1.141:/home/namnh/workspace/franzlift/data/ /home/namnh/franzlift-work/data/`
+### `site_data` is a singleton
 
-2. Make and test changes in `/home/namnh/franzlift-work`.
+Global config lives in the single `site_data` entry with slug **`config`**. The site queries
+it directly via `entryQuery("site_data", "config")`. Always edit that existing entry — a
+second `site_data` record is ignored by the frontend and should be deleted.
 
-3. If styles or Tailwind-scanned templates/scripts changed, run:
+It exposes discrete typed columns (`site_name`, `logo`, `logo_light`, `hotline`,
+`sales_phone`, `tech_phone`, `email`, `address`, `zalo_url`, `facebook_url`, `about_*`,
+`vr_url`, …) plus a legacy `content` JSON field kept for backward compatibility. Prefer the
+typed columns; `src/lib/site.ts` maps them onto the content model with fallbacks.
 
-   `npm run build:css`
+## Routes
 
-4. When appropriate, validate the complete build:
+Vietnamese paths are canonical. English paths are 301 redirects kept for SEO continuity.
 
-   `npm run build`
+| Canonical | Redirects from |
+| --- | --- |
+| `/gioi-thieu` | `/about` |
+| `/san-pham`, `/san-pham/[slug]` | `/products` |
+| `/tin-tuc`, `/tin-tuc/[slug]` | `/blog` |
+| `/dich-vu` | `/services` |
+| `/du-an` | `/projects` |
+| `/cong-nghe` | `/technology` |
+| `/lien-he` | `/contact` |
+| `/360VR` | — |
 
-5. Sync the workspace to the server without local dependencies or Git metadata:
+Legacy numeric product URLs (`/yijia/[id]`, `/youjiasG1/[id]`, `/youjiatG2/[id]`, `/sx/[id]`,
+`/Rli/[id]`) resolve through `legacyProductSlug()` and 301 to `/san-pham/[slug]`, else rewrite
+to `/404`.
 
-   `rsync -az --exclude 'node_modules/' --exclude '.git/' /home/namnh/franzlift-work/ namnh@192.168.1.141:/home/namnh/workspace/franzlift/`
+Also served: `/sitemap.xml`, `/robots.txt`, `/404`.
 
-6. Rebuild and restart the service:
+## Bylines
 
-   `ssh namnh@192.168.1.141 "cd /home/namnh/workspace/franzlift && docker compose up -d --build"`
+Products carry an EmDash byline rendered as an inline editorial signature
+(`footer.fl-post-byline`) at the end of the article body — inside `section.fl-detail-body`,
+not as a detached card. `src/lib/site.ts` exposes it as `product.byline` (`Byline` type),
+reading hydrated `entry.data.bylines` first and falling back to `getByline()` on
+`primary_byline_id`.
 
-7. Verify the container and application:
+Manage authors in the admin under **Bylines**; assign per product in the editor sidebar.
 
-   `ssh namnh@192.168.1.141 "docker ps --filter name=elevator-web && curl -I -H 'X-Forwarded-Proto: https' http://127.0.0.1:3000/"`
+## Widgets
 
-- Direct HTTP requests may return a 301 redirect to `https://franzlift.vn`. The `X-Forwarded-Proto: https` header performs an application-level check through port 3000.
-- If Compose reports a missing network, inspect it with `docker network inspect frontend_net`. Create it only if genuinely absent: `docker network create frontend_net`.
+| Area | Rendered in |
+| --- | --- |
+| `floating_buttons` | `src/layouts/Base.astro`, above `.mobile-cta-bar` |
+| `sidebar_inquiry` | Not currently rendered (exists in D1 only) — see `OPERATIONS.md` |
 
-## Operational Cautions
+## Not a git repository
 
-- This local workspace is not currently a Git repository.
-- There is currently no `.dockerignore`; do not sync `node_modules/` to the server.
-- The application itself does not authenticate `/admin`, `POST /api/content`, or `POST /api/upload`. Confirm that the reverse proxy protects these paths before treating the CMS as secure.
-- Compose has no healthcheck, so `docker ps` alone is not sufficient verification; always perform the HTTP check.
-- The homepage consultation form currently navigates to `/lien-he` with a GET request and does not store or deliver submitted leads.
+This directory is **not** under version control — no history, no remote. Back up before
+destructive edits; overwritten work is unrecoverable.
+
+## Documentation
+
+EmDash docs are available as an MCP server at `https://docs.emdashcms.com/mcp`. When
+verifying an API, hook, config option, or field type, call `search_docs` against the live
+docs rather than relying on recall. `.mcp.json`, `.cursor/mcp.json`, and `.vscode/mcp.json`
+ship here so Claude Code, Cursor, and VS Code auto-discover it.
+
+## Rules
+
+- All content pages must be server-rendered (`output: "server"`). No `getStaticPaths()` for CMS content.
+- Image fields are objects, not strings. Newly uploaded local images intentionally store the
+  R2 key in `meta.storageKey` and may omit `src`/`previewUrl`; `resolveImage()` converts that
+  key to `/_emdash/api/media/file/{storageKey}` at render time. Bundled images retain `src`
+  and `previewUrl` because they do not have an R2 storage key.
+- `entry.id` is the slug (for URLs). `entry.data.id` is the database ULID (for API calls).
+- Always call `Astro.cache.set(cacheHint)` on pages that query content — `setCache()` in
+  `src/lib/site.ts` does this.
+- The admin edit form reads the **draft revision** when `draft_revision_id` is set, otherwise
+  the live revision. Editing `ec_*` columns directly without syncing the matching row in
+  `revisions` leaves the admin showing stale data.
+- The hostname appears in three places — `astro.config.mjs` (`site:`), `wrangler.jsonc`
+  (`routes`), and `src/worker.ts` (`APEX_HOST`/`WWW_HOST`). Change all three together.
+- Keep this project's bindings isolated from HAS Lift's D1/R2. Never cross-wire them.
+
+## What not to do
+
+- Don't add manual `A`/`AAAA` records for `franzlift.vn` or `www.franzlift.vn` — they break
+  the Worker custom-domain attach. Cloudflare manages `AAAA 100::` itself.
+- Don't switch `emdash:site_url` to the apex domain casually — it invalidates the only
+  registered passkey. Follow the procedure in `OPERATIONS.md`.
+- Don't add a sidebar or inquiry form to the product detail page. The original site never had
+  one; the full-width layout is intentional.
+- Don't introduce Tailwind classes expecting them to work — there is no Tailwind pipeline.
+- Don't reintroduce raw JSON textareas in the admin. `site_data` was deliberately converted
+  to discrete typed fields for editors.

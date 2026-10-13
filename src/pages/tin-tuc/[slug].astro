@@ -1,0 +1,36 @@
+---
+import Base from "../../layouts/Base.astro";
+import Picture from "../../components/site/Picture.astro";
+import { formatPhone, getPostPage, heroImgs, pageUrl } from "../../lib/site";
+import { PortableText } from "emdash/ui";
+
+const slug = Astro.params.slug || "";
+const { model, post } = await getPostPage(Astro, slug);
+if (!post) return Astro.rewrite("/404");
+const phone = model.content["contact.salesPhone"] || "0939612555";
+const hasPT = Array.isArray(post.content) && post.content.length > 0;
+---
+<Base model={model} page="postDetail" post={post}>
+	<section class="relative min-h-[420px] overflow-hidden bg-ink pt-20">
+		<Picture src={post.image || heroImgs[0]} alt={post.title} class="absolute inset-0 h-full w-full object-cover" eager sizes="100vw" />
+		<div class="absolute inset-0 bg-black/60"></div>
+		<div class="wrap relative z-10 flex min-h-[420px] items-center">
+			<div data-aos="fade-up" class="text-white">
+				<p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-franz-light">Tin tức{post.date && ` · ${post.date}`}</p>
+				<h1 class="font-display text-3xl font-extrabold lg:text-5xl max-w-3xl">{post.title}</h1>
+			</div>
+		</div>
+	</section>
+	<main class="fl-detail-page wrap">
+		<article class="fl-article">
+			{post.excerpt && <p class="fl-article-lead">{post.excerpt}</p>}
+			<div class="fl-rich-text">
+				{hasPT ? <PortableText value={post.content} /> : <div set:html={post.body || ""} />}
+			</div>
+			<div class="mt-10 flex flex-wrap gap-4">
+				<a class="btn btn-primary" href={`tel:${phone}`}>Gọi {formatPhone(phone)}</a>
+				<a class="btn btn-outline" href={pageUrl.blog}>← Tin tức khác</a>
+			</div>
+		</article>
+	</main>
+</Base>

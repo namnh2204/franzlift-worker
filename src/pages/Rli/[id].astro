@@ -1,0 +1,7 @@
+---
+import { getSiteModel } from "../../lib/site";
+const model = await getSiteModel(Astro);
+const hit = model.products.find((p) => p.legacyPath === Astro.url.pathname);
+if (hit) return Astro.redirect(`/san-pham/${hit.slug}`, 301);
+return Astro.rewrite("/404");
+---

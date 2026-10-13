@@ -1,0 +1,10 @@
+---
+import imageMap from "../../lib/image-map.json";
+interface Props { src: string; alt?: string; class?: string; eager?: boolean; sizes?: string; active?: boolean }
+const { src, alt = "", class: className = "", eager = false, sizes, active = false } = Astro.props;
+const fullClass = [className, active ? "is-active" : ""].filter(Boolean).join(" ");
+const metadata = (imageMap as Record<string, { width?: number; height?: number; webp?: string; srcset?: { w: number; url: string }[] }>)[src];
+const displaySrc = metadata?.webp || src;
+const srcset = metadata?.srcset?.map((item) => `${item.url} ${item.w}w`).join(", ");
+---
+<img src={displaySrc} alt={alt} class={fullClass || undefined} width={metadata?.width} height={metadata?.height} srcset={srcset} loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : undefined} decoding="async" sizes={sizes} />

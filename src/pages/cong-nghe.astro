@@ -1,0 +1,4 @@
+---
+import Base from "../layouts/Base.astro"; import InnerHero from "../components/site/InnerHero.astro"; import {getSiteModel,heroImgs} from "../lib/site"; const model=await getSiteModel(Astro); const {content}=model;
+---
+<Base model={model} page="tech"><InnerHero image={heroImgs[2]} title="Công Nghệ" tall/><main class="wrap py-16 lg:py-24"><div class="text-center" data-aos="fade-up"><p class="kicker">Công nghệ</p><h2 class="section-title">Công Nghệ Franz</h2></div><div class="mt-12 grid gap-6 md:grid-cols-2">{(content.techItems||[]).map((item:any[],i:number)=><article class="rounded-[1.5rem] border border-line bg-white p-8 shadow-sm" data-aos="fade-up" data-aos-delay={i*80}><span class="font-display text-4xl font-extrabold text-franz-light">{String(i+1).padStart(2,"0")}</span><h2 class="mt-4 text-xl font-bold">{item[0]}</h2><p class="mt-3 text-muted">{item[1]}</p></article>)}</div></main></Base>

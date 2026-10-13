@@ -1,0 +1,6 @@
+---
+import { legacyProductSlug } from "../../lib/legacy";
+const slug = legacyProductSlug(Astro.url.pathname);
+if (slug) return Astro.redirect(`/san-pham/${slug}`, 301);
+return Astro.rewrite("/404");
+---

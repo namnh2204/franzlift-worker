@@ -1,0 +1,5 @@
+---
+import Base from "../../layouts/Base.astro"; import InnerHero from "../../components/site/InnerHero.astro"; import Picture from "../../components/site/Picture.astro"; import { getSiteModel, heroImgs } from "../../lib/site";
+const model=await getSiteModel(Astro); const {content,products}=model;
+---
+<Base model={model} page="products"><InnerHero image={heroImgs[0]} title={content["products.title"]||"Danh Mục Sản Phẩm"} intro={content["products.intro"]||""}/><main class="wrap py-16 lg:py-24"><div class="fl-cat-grid">{products.map(p=><a class="fl-cat-card" href={`/san-pham/${p.slug}`}><div class="fl-cat-card-img"><Picture src={p.image} alt={p.name} sizes="(max-width:1023px) 50vw, 33vw"/></div><div class="fl-cat-card-body"><h2>{p.name}</h2><p>{p.summary}</p><span>Xem chi tiết →</span></div></a>)}</div></main></Base>
