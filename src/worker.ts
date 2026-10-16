@@ -22,5 +22,8 @@ export default {
 
 		return handler.fetch!(request, env, context);
 	},
-	scheduled: createScheduledHandler(),
+	scheduled: createScheduledHandler({
+		generalCron: "0 * * * *",
+		mediaUsageCron: "30 * * * *",
+	}),
 };
