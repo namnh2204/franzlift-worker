@@ -15,8 +15,12 @@ export default {
 	) {
 		const url = new URL(request.url);
 
-		if (url.hostname === WWW_HOST) {
-			url.hostname = APEX_HOST;
+		if (url.hostname === "www.franzlift.vn") {
+			url.hostname = "franzlift.vn";
+			return Response.redirect(url.href, 308);
+		}
+		if (url.hostname === "www.franzhanoi.com") {
+			url.hostname = "franzhanoi.com";
 			return Response.redirect(url.href, 308);
 		}
 

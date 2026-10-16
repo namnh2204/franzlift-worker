@@ -8,6 +8,8 @@
 	"routes": [
 		{ "pattern": "franzlift.vn", "custom_domain": true },
 		{ "pattern": "www.franzlift.vn", "custom_domain": true },
+		{ "pattern": "franzhanoi.com", "custom_domain": true },
+		{ "pattern": "www.franzhanoi.com", "custom_domain": true },
 	],
 	"d1_databases": [
 		{
