@@ -25,7 +25,7 @@ export default defineConfig({
 			storage: r2({ binding: "MEDIA" }),
 			plugins: [
 				resend({
-					from: "onboarding@resend.dev",
+					from: "noreply@franzhanoi.com",
 				}),
 			],
 		}),
