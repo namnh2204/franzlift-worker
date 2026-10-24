@@ -104,13 +104,11 @@ async function handleMagicLinkSend(request: Request, env: any) {
 				}),
 			});
 
+			const resText = await resendRes.text();
 			if (!resendRes.ok) {
-				const err = await resendRes.text();
-				console.error("[resend] send failed:", resendRes.status, err);
-			} else {
-				const info = await resendRes.json();
-				console.log("[resend] Magic link sent successfully:", info);
+				return new Response(JSON.stringify({ success: false, error: resText }), { status: 500, headers: { "Content-Type": "application/json" } });
 			}
+			return new Response(JSON.stringify({ success: true, resend: JSON.parse(resText) }), { headers: { "Content-Type": "application/json" } });
 		}
 
 		return new Response(
@@ -164,7 +162,33 @@ export default {
 			return handleMagicLinkSend(request, env);
 		}
 
-		return handler.fetch!(request, env, context);
+		// Edge HTML & asset caching to prevent CPU time limit exhaustion on free tier
+		const isHtmlRequest = request.method === "GET" && (!url.pathname.startsWith("/_emdash") && !url.pathname.startsWith("/api"));
+		const cache = caches.default;
+
+		if (isHtmlRequest) {
+			const cachedResponse = await cache.match(request);
+			if (cachedResponse) {
+				return cachedResponse;
+			}
+		}
+
+		const response = await handler.fetch!(request, env, context);
+
+		if (isHtmlRequest && response.status === 200) {
+			const newHeaders = new Headers(response.headers);
+			// Cache public pages at Cloudflare Edge for 10 minutes to save 95%+ CPU time
+			newHeaders.set("Cache-Control", "public, max-age=60, s-maxage=600");
+			const responseToCache = new Response(response.body, {
+				status: response.status,
+				statusText: response.statusText,
+				headers: newHeaders,
+			});
+			context.waitUntil(cache.put(request, responseToCache.clone()));
+			return responseToCache;
+		}
+
+		return response;
 	},
 	scheduled: createScheduledHandler({
 		generalCron: "0 * * * *",
