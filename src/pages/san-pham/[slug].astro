@@ -17,9 +17,6 @@ const hasPT = Array.isArray(product.content) && product.content.length > 0;
 		<div><p>Sản phẩm</p><h1>{product.name}</h1></div>
 	</section>
 	<main class="fl-detail-page wrap">
-		<nav class="fl-detail-tabs">
-			{model.products.map((p, i) => <a class={i === active ? "active" : ""} href={`/san-pham/${p.slug}`}>{p.name}</a>)}
-		</nav>
 		<section class="fl-detail-grid">
 			<div><Picture src={product.image} alt={product.name} sizes="(max-width:1023px) 100vw, 55vw" /></div>
 			<article><span>FRANZ HOME LIFT</span><h2>{product.name}</h2><p>{product.summary}</p><a href="tel:0939612555">Gọi 0939.612.555</a></article>

@@ -1,5 +1,70 @@
 ---
-import Base from "../layouts/Base.astro"; import InnerHero from "../components/site/InnerHero.astro"; import {getSiteModel,heroImgs} from "../lib/site"; const model=await getSiteModel(Astro); const {content}=model;
+import Base from "../layouts/Base.astro";
+import InnerHero from "../components/site/InnerHero.astro";
+import Picture from "../components/site/Picture.astro";
+import { getSiteModel, heroImgs, toYoutubeEmbed } from "../lib/site";
+const model = await getSiteModel(Astro);
+const { content } = model;
 const siteName = content["branding.siteName"] || "Thang Máy Nhập Khẩu Franz";
+const aboutSections = content.aboutSections || [];
 ---
-<Base model={model} page="about"><InnerHero image={heroImgs[1]} title={content["about.title"]||("Về " + siteName)} tall/><main class="wrap py-16 lg:py-24"><div class="mx-auto max-w-4xl space-y-10"><section data-aos="fade-up"><h2 class="section-title">{content["about.title"]}</h2><p class="mt-6 text-muted">{content["about.p1"]}</p><p class="mt-4 text-muted">{content["about.p2"]}</p></section><section data-aos="fade-up"><h2 class="text-2xl font-bold">Câu Chuyện Thương Hiệu</h2><p class="mt-4 text-muted">{content["about.story1"]}</p><p class="mt-4 text-muted">{content["about.story2"]}</p></section><div class="grid gap-6 md:grid-cols-2"><section class="rounded-2xl bg-franz-soft p-7" data-aos="fade-up"><h2 class="text-xl font-bold">Tầm Nhìn</h2><p class="mt-3 text-muted">{content["about.vision"]}</p></section><section class="rounded-2xl bg-franz-soft p-7" data-aos="fade-up" data-aos-delay="80"><h2 class="text-xl font-bold">Sứ Mệnh</h2><p class="mt-3 text-muted">{content["about.mission"]}</p></section></div><section data-aos="fade-up"><h2 class="mb-8 text-2xl font-bold">Hành Trình Franz</h2><div class="space-y-5">{(content.timeline||[]).map((tl:any[])=><div class="grid gap-4 rounded-2xl border border-line p-6 md:grid-cols-[120px_1fr]"><b class="font-display text-3xl text-franz">{tl[0]}</b><p class="text-muted">{tl[1]}</p></div>)}</div></section></div></main></Base>
+<Base model={model} page="about">
+	<InnerHero image={heroImgs[1]} title={content["about.title"] || ("Về " + siteName)} tall />
+	<main class="wrap py-16 lg:py-24">
+		<div class="mx-auto max-w-4xl space-y-12">
+			{aboutSections.length > 0 ? (
+				aboutSections.map((sec: any) => (
+					<section data-aos="fade-up" class="border-b border-line pb-10">
+						<h2 class="section-title text-3xl font-bold">{sec.title}</h2>
+						<div class="mt-6 text-muted space-y-4" style="line-height: 1.8; font-size: 16px; white-space: pre-line;">
+							{sec.content}
+						</div>
+						{sec.video_url ? (
+							<div class="mt-8 rounded-2xl overflow-hidden shadow-lg aspect-video">
+								<iframe src={toYoutubeEmbed(sec.video_url)} title={sec.title} style="width:100%;height:100%;border:0;" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+							</div>
+						) : sec.image ? (
+							<div class="mt-8 rounded-2xl overflow-hidden shadow-lg">
+								<Picture src={sec.image} alt={sec.title} sizes="(max-width:1023px) 100vw, 800px" />
+							</div>
+						) : null}
+					</section>
+				))
+			) : (
+				<>
+					<section data-aos="fade-up">
+						<h2 class="section-title">{content["about.title"]}</h2>
+						<p class="mt-6 text-muted">{content["about.p1"]}</p>
+						<p class="mt-4 text-muted">{content["about.p2"]}</p>
+					</section>
+					<section data-aos="fade-up">
+						<h2 class="text-2xl font-bold">Câu Chuyện Thương Hiệu</h2>
+						<p class="mt-4 text-muted">{content["about.story1"]}</p>
+						<p class="mt-4 text-muted">{content["about.story2"]}</p>
+					</section>
+				</>
+			)}
+			<div class="grid gap-6 md:grid-cols-2">
+				<section class="rounded-2xl bg-franz-soft p-7" data-aos="fade-up">
+					<h2 class="text-xl font-bold">Tầm Nhìn</h2>
+					<p class="mt-3 text-muted">{content["about.vision"]}</p>
+				</section>
+				<section class="rounded-2xl bg-franz-soft p-7" data-aos="fade-up" data-aos-delay="80">
+					<h2 class="text-xl font-bold">Sứ Mệnh</h2>
+					<p class="mt-3 text-muted">{content["about.mission"]}</p>
+				</section>
+			</div>
+			<section data-aos="fade-up">
+				<h2 class="mb-8 text-2xl font-bold">{content["about.timelineTitle"] || "Hành Trình Phát Triển"}</h2>
+				<div class="space-y-5">
+					{(content.timeline || []).map((tl: any[]) => (
+						<div class="grid gap-4 rounded-2xl border border-line p-6 md:grid-cols-[120px_1fr]">
+							<b class="font-display text-3xl text-franz">{tl[0]}</b>
+							<p class="text-muted">{tl[1]}</p>
+						</div>
+					))}
+				</div>
+			</section>
+		</div>
+	</main>
+</Base>

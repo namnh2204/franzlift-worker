@@ -122,6 +122,37 @@
           "slug": "vr_url",
           "label": "Liên kết trải nghiệm 360° VR",
           "type": "url"
+        },
+        {
+          "slug": "about_sections",
+          "label": "Các mục nội dung Giới thiệu (Tự do thêm, nhân bản, tải ảnh/video)",
+          "type": "repeater",
+          "validation": {
+            "subFields": [
+              {
+                "slug": "title",
+                "label": "Tiêu đề mục (VD: Về Thuận Phát)",
+                "type": "string",
+                "required": true
+              },
+              {
+                "slug": "content",
+                "label": "Nội dung mô tả (Hỗ trợ xuống dòng, format)",
+                "type": "text",
+                "required": true
+              },
+              {
+                "slug": "image",
+                "label": "Hình ảnh",
+                "type": "image"
+              },
+              {
+                "slug": "video_url",
+                "label": "Link Video (YouTube)",
+                "type": "url"
+              }
+            ]
+          }
         }
       ]
     },
@@ -308,6 +339,11 @@
           "type": "image"
         },
         {
+          "slug": "video_url",
+          "label": "Link Video Công trình (YouTube)",
+          "type": "url"
+        },
+        {
           "slug": "gallery",
           "label": "Thư viện ảnh dự án",
           "type": "repeater",
@@ -473,6 +509,11 @@
           "type": "text"
         },
         {
+          "slug": "image",
+          "label": "Ảnh minh họa lý do",
+          "type": "image"
+        },
+        {
           "slug": "sort_order",
           "label": "Thứ tự",
           "type": "integer"
@@ -499,6 +540,49 @@
           "label": "Nhãn (ví dụ: Năm kinh nghiệm)",
           "type": "string",
           "required": true
+        },
+        {
+          "slug": "sort_order",
+          "label": "Thứ tự",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "testimonials",
+      "label": "Đánh giá của khách hàng",
+      "labelSingular": "Đánh giá khách hàng",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "name",
+          "label": "Tên khách hàng",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "address",
+          "label": "Địa chỉ / Công trình (ví dụ: KĐT Vinhomes Riverside, Hà Nội)",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Chia sẻ ngắn gọn của khách hàng",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "image",
+          "label": "Ảnh khách hàng / công trình thực tế",
+          "type": "image"
+        },
+        {
+          "slug": "video_url",
+          "label": "Link Video Feedback (YouTube URL)",
+          "type": "url"
         },
         {
           "slug": "sort_order",
@@ -1186,7 +1270,27 @@
             "branding.logo": "/assets-local/logo-header.svg",
             "branding.logoLight": "/assets-local/logo-header-white.svg",
             "branding.siteName": "Thang Máy Nhập Khẩu Franz"
-          }
+          },
+          "about_sections": [
+            {
+              "title": "Về Thuận Phát",
+              "content": "Thang máy Thuận Phát là đơn vị chuyên cung cấp, lắp đặt và bảo trì thang máy gia đình nhập khẩu chính hãng tại Việt Nam. Chúng tôi là đối tác chiến lược của các thương hiệu uy tín hàng đầu như Franz Home Lift, HAS Asansör… ứng dụng công nghệ tiên tiến từ Đức, Thổ Nhĩ Kỳ, Ý.\n\nVới hơn 10 năm kinh nghiệm cùng đội ngũ kỹ sư chuyên môn cao, Thuận Phát cam kết mang đến những giải pháp di chuyển hoàn hảo, nâng tầm không gian sống và giá trị kiến trúc cho ngôi nhà bạn.",
+              "image": {
+                "id": "bundled:/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.png",
+                "src": "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.png"
+              },
+              "video_url": "https://www.youtube.com/embed/Y79yUo46ePU"
+            },
+            {
+              "title": "Về Franz Home Lift",
+              "content": "Suzhou Franz Intelligent Elevator là đơn vị chuyên nghiên cứu, phát triển và sản xuất các dòng thang máy gia đình, thang máy biệt thự và giải pháp di chuyển thông minh cho không gian sống hiện đại.\n\nNhà máy sản xuất cùng trung tâm nghiên cứu được đặt tại Khu công nghiệp tiết kiệm năng lượng Trương Gia Cảng, tỉnh Giang Tô, đạt tiêu chuẩn khắt khe về kỹ thuật và chứng nhận an toàn chuẩn Châu Âu TÜV Rheinland.",
+              "image": {
+                "id": "bundled:/assets-local/03-2aeef62d95c474ce21e032cf459b418e.png",
+                "src": "/assets-local/03-2aeef62d95c474ce21e032cf459b418e.png"
+              },
+              "video_url": ""
+            }
+          ]
         }
       }
     ],
@@ -8539,7 +8643,11 @@
         "data": {
           "title": "Đỉnh Cao Công Nghệ Đức",
           "description": "Thang máy nhập khẩu Franz đồng bộ nguyên chiếc, đạt chứng nhận an toàn quốc tế khắt khe.",
-          "sort_order": 0
+          "sort_order": 0,
+          "image": {
+            "id": "bundled:/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.png",
+            "src": "/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.png"
+          }
         }
       },
       {
@@ -8549,7 +8657,11 @@
         "data": {
           "title": "Hố Pit Siêu Nông & Không Phòng Máy",
           "description": "Chỉ từ 60mm - 150mm, giữ nguyên kết cấu sàn và kiến trúc mái tòa nhà.",
-          "sort_order": 1
+          "sort_order": 1,
+          "image": {
+            "id": "bundled:/assets-local/07-399adc95948b507d47e4fe295d45e492.png",
+            "src": "/assets-local/07-399adc95948b507d47e4fe295d45e492.png"
+          }
         }
       },
       {
@@ -8559,7 +8671,11 @@
         "data": {
           "title": "Thiết Kế Tinh Xảo & Cá Nhân Hóa",
           "description": "Đa dạng tùy chọn vách kính toàn cảnh, trần và sàn nghệ thuật sang trọng.",
-          "sort_order": 2
+          "sort_order": 2,
+          "image": {
+            "id": "bundled:/assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53.png",
+            "src": "/assets-local/08-b83d8158bc0dfa9fd0a1443de5583b53.png"
+          }
         }
       },
       {
@@ -8569,7 +8685,11 @@
         "data": {
           "title": "Vận Hành Bằng Điện 220V",
           "description": "Tiết kiệm điện năng vượt trội, êm ái tuyệt đối không gây tiếng ồn.",
-          "sort_order": 3
+          "sort_order": 3,
+          "image": {
+            "id": "bundled:/assets-local/09-54086bca79dd4a4376e87b9e84913998.png",
+            "src": "/assets-local/09-54086bca79dd4a4376e87b9e84913998.png"
+          }
         }
       },
       {
@@ -8579,7 +8699,11 @@
         "data": {
           "title": "Dịch Vụ Hậu Mãi Toàn Diện",
           "description": "Bảo hành dài hạn, bảo trì định kỳ bởi đội ngũ kỹ thuật giàu kinh nghiệm.",
-          "sort_order": 4
+          "sort_order": 4,
+          "image": {
+            "id": "bundled:/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.png",
+            "src": "/assets-local/06-8c3cfe6ed48e0d4939b790419bf12d84.png"
+          }
         }
       }
     ],
@@ -8621,6 +8745,53 @@
         "data": {
           "number": "24/7",
           "label": "Hỗ trợ kỹ thuật chuyên sâu",
+          "sort_order": 3
+        }
+      }
+    ],
+    "testimonials": [
+      {
+        "id": "testi-1",
+        "slug": "testi-1",
+        "status": "published",
+        "data": {
+          "name": "Bác Nguyễn Văn Thành",
+          "address": "Biệt thự Louis City, Đại Mỗ, Hà Nội",
+          "content": "Gia đình tôi rất hài lòng khi lựa chọn thang máy Franz. Thiết kế kính sang trọng, hố pit chỉ 60mm nên không phải đào sâu móng nhà cũ. Thang chạy cực kỳ êm ái, người già và trẻ nhỏ dùng rất an tâm.",
+          "image": {
+            "id": "bundled:/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.png",
+            "src": "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.png"
+          },
+          "sort_order": 1
+        }
+      },
+      {
+        "id": "testi-2",
+        "slug": "testi-2",
+        "status": "published",
+        "data": {
+          "name": "Anh Trần Minh Tuấn",
+          "address": "Nhà phố cải tạo Phố Huế, Hoàn Kiếm",
+          "content": "Nhà phố 5 tầng diện tích hạn chế, lúc đầu tôi rất đắn đo việc lắp thang máy. Nhờ đội ngũ tư vấn giải pháp thang không phòng máy, kích thước giếng thang tối ưu chỉ hơn 1m2 mà cabin vẫn rộng rãi, đẳng cấp.",
+          "image": {
+            "id": "bundled:/assets-local/03-2aeef62d95c474ce21e032cf459b418e.png",
+            "src": "/assets-local/03-2aeef62d95c474ce21e032cf459b418e.png"
+          },
+          "sort_order": 2
+        }
+      },
+      {
+        "id": "testi-3",
+        "slug": "testi-3",
+        "status": "published",
+        "data": {
+          "name": "Chị Lê Thu Hà",
+          "address": "KĐT Ciputra, Tây Hồ, Hà Nội",
+          "content": "Dịch vụ thi công đúng tiến độ cam kết, kỹ thuật viên làm việc cẩn thận, chuyên nghiệp. Nội thất cabin tinh xảo, đồng bộ hoàn hảo với không gian kiến trúc biệt thự của gia đình.",
+          "image": {
+            "id": "bundled:/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618.png",
+            "src": "/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618.png"
+          },
           "sort_order": 3
         }
       }

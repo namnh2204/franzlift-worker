@@ -3607,3 +3607,208 @@ h3 {
     font-size: 13px;
   }
 }
+
+/* Testimonials / Feedback Section */
+.fl-testimonials {
+	padding: 96px 0;
+	background: #f4f8fb;
+}
+.fl-testimonial-swiper {
+	padding-bottom: 54px;
+	position: relative;
+}
+.fl-testimonial-card {
+	border-radius: 12px;
+	overflow: hidden;
+	background: #ffffff;
+	border: 1px solid #e4edf2;
+	box-shadow: 0 4px 20px rgba(20, 33, 43, 0.05);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.fl-testimonial-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 12px 30px rgba(20, 33, 43, 0.1);
+}
+.fl-testi-media {
+	height: 220px;
+	position: relative;
+	overflow: hidden;
+	background: #14212b;
+}
+.fl-testi-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.5s ease;
+}
+.fl-testimonial-card:hover .fl-testi-media img {
+	transform: scale(1.05);
+}
+.fl-testi-media iframe {
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.fl-testi-meta {
+	padding: 20px 24px 12px;
+	border-bottom: 1px solid #f0f4f7;
+	background: #ffffff;
+}
+.fl-testi-name {
+	font-family: Plus Jakarta Sans, sans-serif;
+	font-size: 18px;
+	font-weight: 700;
+	color: #14212b;
+	margin: 0;
+}
+.fl-testi-addr {
+	font-size: 13px;
+	color: #419ac2;
+	margin-top: 4px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.fl-testi-content {
+	padding: 20px 24px 28px;
+	background: #ffffff;
+	color: #14212b;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.fl-testi-content p {
+	font-size: 15px;
+	line-height: 1.7;
+	color: #2b3a42;
+	margin: 0;
+	position: relative;
+	font-style: normal;
+}
+.fl-testi-stars {
+	color: #f59e0b;
+	margin-top: 14px;
+	font-size: 14px;
+	letter-spacing: 2px;
+}
+.fl-testi-nav {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	margin-top: 24px;
+}
+.fl-testi-btn-prev,
+.fl-testi-btn-next {
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: #ffffff;
+	border: 1px solid #d0dfe8;
+	color: #14212b;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	font-size: 18px;
+	font-weight: bold;
+}
+.fl-testi-btn-prev:hover,
+.fl-testi-btn-next:hover {
+	background: #419ac2;
+	border-color: #419ac2;
+	color: #ffffff;
+}
+
+/* VR section tweaks */
+.fl-vr-actions {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-top: 28px;
+	flex-wrap: wrap;
+}
+.fl-vr-main-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	border-radius: 999px;
+	background: #419ac2;
+	color: #ffffff;
+	padding: 14px 30px;
+	font-weight: 800;
+	transition: background 0.2s ease;
+}
+.fl-vr-main-btn:hover {
+	background: #3281a6;
+}
+.fl-vr-sub-link {
+	display: inline-block;
+	color: #419ac2;
+	font-weight: 700;
+	font-size: 15px;
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}
+.fl-vr-media-box {
+	position: relative;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+.fl-vr-tag {
+	position: absolute;
+	bottom: 16px;
+	right: 16px;
+	background: rgba(20, 33, 43, 0.85);
+	backdrop-filter: blur(8px);
+	color: #ffffff;
+	padding: 8px 16px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+}
+
+/* Project Detail View Button */
+.fl-case-view-btn {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	z-index: 3;
+	background: rgba(20, 33, 43, 0.85);
+	backdrop-filter: blur(8px);
+	color: #ffffff;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 999px;
+	padding: 8px 16px;
+	font-size: 12px;
+	font-weight: 700;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+.fl-case-card:hover .fl-case-view-btn {
+	background: #419ac2;
+	border-color: #419ac2;
+}
+
+@media (max-width: 640px) {
+	.fl-case-view-btn {
+		opacity: 1;
+		top: 12px;
+		right: 12px;
+		padding: 6px 12px;
+		font-size: 11px;
+	}
+	.fl-testi-media {
+		height: 180px;
+	}
+}

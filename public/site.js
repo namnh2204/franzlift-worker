@@ -30,6 +30,43 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Testimonials carousel
+	if (document.querySelector(".fl-testimonial-swiper") && typeof Swiper !== "undefined") {
+		new Swiper(".fl-testimonial-swiper", {
+			loop: true,
+			slidesPerView: 1.1,
+			spaceBetween: 20,
+			navigation: {
+				nextEl: ".fl-testi-btn-next",
+				prevEl: ".fl-testi-btn-prev",
+			},
+			pagination: { el: ".fl-testimonial-swiper .swiper-pagination", clickable: true },
+			breakpoints: {
+				640: { slidesPerView: 2.1, spaceBetween: 24 },
+				1024: { slidesPerView: 3, spaceBetween: 24 },
+			},
+		});
+	}
+
+	// Why reasons interactive image switch
+	var reasonDetails = document.querySelectorAll(".tp-reasons details");
+	var whyMediaImg = document.querySelector(".tp-why-media img");
+	if (reasonDetails.length && whyMediaImg) {
+		reasonDetails.forEach((detail) => {
+			detail.addEventListener("toggle", () => {
+				if (detail.open) {
+					reasonDetails.forEach((other) => {
+						if (other !== detail && other.open) other.open = false;
+					});
+					var newSrc = detail.getAttribute("data-img");
+					if (newSrc) {
+						whyMediaImg.src = newSrc;
+					}
+				}
+			});
+		});
+	}
+
 	document.querySelectorAll("[data-case-rotator]").forEach((rotator) => {
 		var images = rotator.querySelectorAll("img");
 		if (images.length < 2) return;
@@ -119,15 +156,32 @@ document.addEventListener("DOMContentLoaded", () => {
 		var lightboxImage = lightbox.querySelector("img");
 		var lightboxCaption = lightbox.querySelector("p");
 		var lightboxClose = lightbox.querySelector("button");
+
+		var openLightbox = (src, title) => {
+			if (!src) return;
+			lightboxImage.src = src;
+			lightboxImage.alt = title || "";
+			lightboxCaption.textContent = title || "";
+			lightbox.showModal();
+		};
+
 		document.querySelectorAll("[data-lightbox]").forEach((link) => {
 			link.addEventListener("click", (event) => {
 				event.preventDefault();
-				lightboxImage.src = link.href;
-				lightboxImage.alt = link.getAttribute("data-title") || "";
-				lightboxCaption.textContent = link.getAttribute("data-title") || "";
-				lightbox.showModal();
+				openLightbox(link.href, link.getAttribute("data-title") || "");
 			});
 		});
+
+		document.querySelectorAll("[data-lightbox-trigger]").forEach((btn) => {
+			btn.addEventListener("click", (event) => {
+				event.preventDefault();
+				event.stopPropagation();
+				var src = btn.getAttribute("data-href");
+				var title = btn.getAttribute("data-title");
+				openLightbox(src, title);
+			});
+		});
+
 		lightboxClose.addEventListener("click", () => {
 			lightbox.close();
 		});

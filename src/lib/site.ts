@@ -101,6 +101,7 @@ export async function getSiteModel(Astro: any): Promise<SiteModel> {
 		heroResult,
 		reasonsResult,
 		statsResult,
+		testimonialsResult,
 	] = await Promise.all([
 		entryQuery("site_data", "config"),
 		collectionQuery("products", {
@@ -148,6 +149,11 @@ export async function getSiteModel(Astro: any): Promise<SiteModel> {
 			limit: 100,
 			orderBy: { sort_order: "asc" },
 		}),
+		collectionQuery("testimonials", {
+			status: "published",
+			limit: 100,
+			orderBy: { sort_order: "asc" },
+		}).catch(() => ({ entries: [] })),
 	]);
 
 	[
@@ -161,6 +167,7 @@ export async function getSiteModel(Astro: any): Promise<SiteModel> {
 		heroResult,
 		reasonsResult,
 		statsResult,
+		testimonialsResult,
 	].forEach((r) => setCache(Astro, r?.cacheHint));
 
 	const content = {
@@ -196,6 +203,7 @@ export async function getSiteModel(Astro: any): Promise<SiteModel> {
 			e.data.description || "",
 			resolveImage(e.data.image) || "",
 			resolveGallery(e.data),
+			e.data.video_url || "",
 		]);
 		content.homeCases = content.projects;
 	}
@@ -235,6 +243,7 @@ export async function getSiteModel(Astro: any): Promise<SiteModel> {
 		content.homeReasons = reasonsResult.entries.map((e: any) => [
 			e.data.title || "",
 			e.data.description || "",
+			resolveImage(e.data.image) || "",
 		]);
 	}
 
@@ -243,6 +252,46 @@ export async function getSiteModel(Astro: any): Promise<SiteModel> {
 			e.data.value || "",
 			e.data.label || "",
 		]);
+	}
+
+	if (testimonialsResult?.entries?.length) {
+		content.testimonials = testimonialsResult.entries.map((e: any) => ({
+			name: e.data.name || "",
+			address: e.data.address || "",
+			content: e.data.content || "",
+			image: resolveImage(e.data.image) || "",
+			video_url: e.data.video_url || "",
+		}));
+	} else if (!content.testimonials) {
+		content.testimonials = [
+			{
+				name: "Bác Nguyễn Văn Thành",
+				address: "Biệt thự Louis City, Đại Mỗ, Hà Nội",
+				content: "Gia đình tôi rất hài lòng khi lựa chọn thang máy Franz. Thiết kế kính sang trọng, hố pit chỉ 60mm nên không phải can thiệp móng nhà cũ. Thang chạy êm ái, an toàn tuyệt đối.",
+				image: "/assets-local/02-bce74fae6c8eb1eba141044b0b26d970.png",
+			},
+			{
+				name: "Anh Trần Minh Tuấn",
+				address: "Nhà phố cải tạo Phố Huế, Hoàn Kiếm",
+				content: "Nhà phố 5 tầng diện tích nhỏ, may mắn chọn được giải pháp thang không phòng máy của Franz. Kích thước giếng thang chỉ 1m2 nhưng cabin thoáng rộng, vận hành ổn định.",
+				image: "/assets-local/03-2aeef62d95c474ce21e032cf459b418e.png",
+			},
+			{
+				name: "Chị Lê Thu Hà",
+				address: "KĐT Ciputra, Tây Hồ, Hà Nội",
+				content: "Tiến độ thi công rất chuẩn xác, các bạn kỹ thuật viên nhiệt tình. Khách đến chơi nhà ai cũng khen thang máy đẹp, hiện đại và rất tôn giá trị ngôi nhà.",
+				image: "/assets-local/04-d0c9bfc93f3cfe73f93e1cb285769618.png",
+			},
+		];
+	}
+
+	if (Array.isArray(sd.about_sections) && sd.about_sections.length) {
+		content.aboutSections = sd.about_sections.map((sec: any) => ({
+			title: sec.title || "",
+			content: sec.content || "",
+			image: resolveImage(sec.image) || "",
+			video_url: sec.video_url || "",
+		}));
 	}
 
 	const products = (productResult.entries || [])
@@ -387,6 +436,46 @@ export const advImgs = [
 ];
 export const text = (content: SiteContent, key: string, fallback = "") =>
 	content[key] || fallback;
+export function toYoutubeEmbed(url: any, fallback = "https://www.youtube.com/embed/Y79yUo46ePU"): string {
+	if (!url) return fallback;
+	let str = String(url).trim();
+	if (!str) return fallback;
+
+	const iframeMatch = str.match(/src=["']([^"']+)["']/);
+	if (iframeMatch) str = iframeMatch[1].trim();
+
+	const embedMatch = str.match(/youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+	if (embedMatch) return "https://www.youtube.com/embed/" + embedMatch[1];
+
+	if (!/^https?:\/\//i.test(str)) {
+		if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return "https://www.youtube.com/embed/" + str;
+		str = "https://" + str;
+	}
+	try {
+		const parsed = new URL(str);
+		const host = parsed.hostname.toLowerCase();
+		const path = parsed.pathname;
+		let id = "";
+		if (host.includes("youtu.be")) {
+			id = path.split("/").filter(Boolean)[0] || "";
+		} else if (host.includes("youtube")) {
+			if (path.includes("/shorts/")) {
+				id = path.split("/shorts/")[1]?.split("/")[0]?.split("?")[0] || "";
+			} else if (path.includes("/embed/")) {
+				id = path.split("/embed/")[1]?.split("/")[0]?.split("?")[0] || "";
+			} else if (path.includes("/live/")) {
+				id = path.split("/live/")[1]?.split("/")[0]?.split("?")[0] || "";
+			} else {
+				id = parsed.searchParams.get("v") || "";
+			}
+		}
+		id = id.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 32);
+		return id ? "https://www.youtube.com/embed/" + id : fallback;
+	} catch {
+		return fallback;
+	}
+}
+
 export function formatPhone(phone: string) {
 	const digits = String(phone || "").replace(/\D/g, "");
 	return digits.length === 10
